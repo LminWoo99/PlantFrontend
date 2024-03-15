@@ -7,6 +7,7 @@ import Comment from "./Comment.js"
 function CommentList(props) {
 
 	const tradeBoardId = props.id;
+	const token = localStorage.getItem("bbs_access_token");
 	console.log(tradeBoardId);
 	// Paging
 	const [pageable, setPageable] = useState(1);
@@ -20,7 +21,9 @@ function CommentList(props) {
 	}
 
 	const getCommentList = async (pageable) => {
-		await axios.get(`/api/comment`, { params: { "tradeBoardId": tradeBoardId, "pageable": pageable-1 } })
+		await axios.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/comment`, { params: { "tradeBoardId": tradeBoardId, "pageable": pageable-1 },  headers: {
+			Authorization: `Bearer ${token}`,
+		  } })
 			.then((resp) => {
 				console.log("[BbsComment.js] getCommentList() success :D");
 				console.log(resp.data);

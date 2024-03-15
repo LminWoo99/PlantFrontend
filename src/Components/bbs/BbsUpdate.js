@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
-import { AuthContext } from "../context/AuthProvider";
-import { HttpHeadersContext } from "../context/HttpHeadersProvider";
-import { IdContext } from "../context/IdProvider";
+import { AuthContext } from "../../context/AuthProvider";
+import { HttpHeadersContext } from "../../context/HttpHeadersProvider";
+import { IdContext } from "../../context/IdProvider";
 import BuyerSelection from "./BuyerSelection";
 
 function BbsUpdate() {
@@ -50,7 +50,7 @@ console.log(status);
     };
 
     await axios
-      .put(`/api/list/${tradeBoardDto.id}`, req, {
+      .put(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/list/${tradeBoardDto.id}`, req, {
         headers: headers,
       })
       .then((resp) => {
@@ -60,10 +60,6 @@ console.log(status);
       
         alert("게시글을 성공적으로 수정했습니다 :D");
         
-
-        if (status === '거래완료') {
-          navigate(`/bbsbuyer/${tradeBoardDto.id}`);
-        }
       })
       .catch((err) => {
         console.log("[BbsUpdate.js] updateBbs() error :<");
@@ -111,20 +107,7 @@ console.log(status);
               ></textarea>
             </td>
           </tr>
-          <tr>
-            <th className="table-primary">거래 상태</th>
-            <td>
-              <select
-                className="form-control"
-                value={status}
-                onChange={changeStatus}
-              >
-				<option value="판매중">판매중</option>
-                <option value="거래완료">거래완료</option>
-                
-              </select>
-            </td>
-          </tr>
+          
 		  <tr>
             <th className="table-primary">제목</th>
             <td>

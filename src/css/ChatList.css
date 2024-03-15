@@ -1,0 +1,127 @@
+.chat-list-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: auto;
+  border: 1px solid #ddd;
+  border-radius: 20px; /* 컨테이너의 모서리를 둥글게 */
+  overflow: hidden;
+  background: #f4f4f4; /* 배경색 변경 */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 그림자 효과 추가 */
+}
+
+.chat-list {
+
+  padding: 0; /* 패딩 초기화 */
+}
+
+.chat-room {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px; /* 패딩 조정 */
+  border-bottom: 1px solid #eee; /* 구분선 색상 변경 */
+  background: #fff; /* 각 채팅방 배경색 변경 */
+}
+.trade-complete-button {
+  padding: 5px 10px;
+  margin-left: 10px;
+  background-color: #04b486; /* 예시 배경색 */
+  color: white; /* 텍스트 색상 */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.trade-complete-button:hover {
+  background-color: #028a62; /* 호버 시 배경색 변경 */
+}
+.chat-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%; /* 원형으로 만들기 */
+  overflow: hidden; /* 이미지가 div를 넘어가지 않도록 설정 */
+  background-color: #ccc; /* 이미지가 없을 경우의 기본 배경색 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 15px;
+  position: relative; /* 상대적 위치 설정 */
+}
+
+.chat-avatar img {
+  width: 100%; /* 이미지의 너비를 컨테이너에 맞춤 */
+  height: auto; /* 이미지의 높이를 자동으로 설정하여 비율 유지 */
+}
+
+
+.chat-info {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.nickname {
+  font-weight: bold;
+  color: #333; /* 닉네임 색상 변경 */
+  margin-bottom: 5px; /* 닉네임과 마지막 메시지 사이의 간격 조정 */
+}
+
+.last-message {
+  color: #666;
+  font-size: 0.9em;
+}
+
+.chat-meta {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* 중앙 정렬 */
+  position: relative;
+}
+.time-since {
+  font-size: 0.8em;
+  color: #999;
+  margin-right: 5px; /* Add margin to separate time from unread count if necessary */
+}
+.unread-count {
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 0.8em;
+  font-weight: bold;
+  min-width: 20px;
+  text-align: center;
+  display: flex; /* flex 디스플레이 추가 */
+  align-items: center; /* 세로 중앙 정렬 */
+  justify-content: center; /* 가로 중앙 정렬 */
+  height: 20px; /* 높이 조정 */
+  width: 20px; /* 너비 조정 */
+  position: relative; /* 상대 위치 설정 */
+  top: -10px; /* 상단 위치 조정 */
+  right: -10px; /* 우측 위치 조정 */
+  margin-left: auto; /* 왼쪽 자동 여백 설정 */
+}
+.unread-count-none {
+  background-color: white;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 0.8em;
+  font-weight: bold;
+  min-width: 20px;
+  text-align: center;
+  display: flex; /* flex 디스플레이 추가 */
+  align-items: center; /* 세로 중앙 정렬 */
+  justify-content: center; /* 가로 중앙 정렬 */
+  height: 20px; /* 높이 조정 */
+  width: 20px; /* 너비 조정 */
+  position: relative; /* 상대 위치 설정 */
+  top: -10px; /* 상단 위치 조정 */
+  right: -10px; /* 우측 위치 조정 */
+  margin-left: auto; /* 왼쪽 자동 여백 설정 */
+}
+/* 마지막 채팅방 아래의 border를 제거 */
+.chat-room:last-child {
+  border-bottom: none;
+}

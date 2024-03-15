@@ -18,6 +18,10 @@ import BuyerSelection from "../bbs/BuyerSelection";
 import FindId from "../member/FindId";
 import ResetPassword from "../member/ResetMember";
 import BuyInfo from "../member/BuyInfo";
+import ChatRoom from "../chat/ChatRoom";
+import ChatList from "../chat/ChatList";
+import NoChatRoomExist from "../chat/NoChatRoomExist";
+import NotificationList from "../notification/NotificationList";
 
 
 function Router() {
@@ -37,7 +41,7 @@ function Router() {
 				<Route path="/plantlist" element={<PlantList />}></Route>
 				<Route path="/plantdetail/:id" element={<PlantDetail />}></Route>
 				<Route path="/bbsupdate" element={<BbsUpdate />}></Route>
-				<Route path="/bbsbuyer/:id" element={<BuyerSelection />}></Route>
+				<Route path="/bbsbuyer/:id/:nickname" element={<BuyerSelection />}></Route>
 
 				<Route path="/sales" element={<MyTradeInfo />}> </Route>
 				<Route path="/wishlist" element={<WishList />}> </Route>
@@ -46,6 +50,11 @@ function Router() {
 				<Route path="/login" element={<Login />}></Route>
 				<Route path="/join" element={<Join />}></Route>
 				<Route path="/logout" element={<Logout />}></Route>
+				<Route path="/noChatRoomExist" element={<NoChatRoomExist />}></Route>
+				<Route path="/chatroom/:tradeBoardNo" element={<ChatList />}></Route>
+				<Route path="/notificationlist" element={<NotificationList />}></Route>
+				<Route path="/chatroom/:id/:tradeBoardNo/:nickname" element={<ChatRoom />} />
+				
 			</Routes>
 	);
 }

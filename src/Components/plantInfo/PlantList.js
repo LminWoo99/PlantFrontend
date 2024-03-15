@@ -1,14 +1,16 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import Pagination from "react-js-pagination";
 import styled from "styled-components";
 import "../../css/PlantList.css";
+import { HttpHeadersContext } from "../../context/HttpHeadersProvider";
 function PlantList() {
   const [plants, setPlants] = useState([]);
   const [searchVal, setSearchVal] = useState("");
   const [pageable, setPageable] = useState(1);
   const [totalCnt, setTotalCnt] = useState(0);
+  const { headers, setHeaders } = useContext(HttpHeadersContext);
 
   useEffect(() => {
     loadPlants();
@@ -16,7 +18,7 @@ function PlantList() {
 
   const loadPlants = () => {
     axios
-      .get(`/api/plantList?search=${searchVal}&page=${pageable-1}`)
+      .get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/plantList?search=${searchVal}&page=${pageable-1}`, { headers: headers })
       .then((response) => {
         setPlants(response.data.content);
         setTotalCnt(response.data.totalElements);

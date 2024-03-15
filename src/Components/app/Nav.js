@@ -1,8 +1,10 @@
 import React, { useContext, useState } from "react";
-import { AuthContext } from "../context/AuthProvider";
+import { AuthContext } from "../../context/AuthProvider";
 import { Link } from "react-router-dom";
-import MyTradeInfo from "../member/MyTradeInfo"; // 이 부분은 경로에 맞게 수정해주세요
+import MyTradeInfo from "../member/MyTradeInfo"; 
 import "../../css/nav.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBell } from '@fortawesome/free-solid-svg-icons';
 
 function Nav() {
   const { auth, setAuth } = useContext(AuthContext);
@@ -60,6 +62,7 @@ function Nav() {
                 <Link className="dropdown-item" to="/sales">판매 내역</Link>
                 <Link className="dropdown-item" to="/wishlist">찜 내역</Link>
                 <Link className="dropdown-item" to="/buyInfo">구매 내역</Link>
+                
               </div>
             </li>
 
@@ -67,7 +70,16 @@ function Nav() {
               // 로그아웃
               <li className="nav-item">
                 <Link className="nav-link" style={{ color: "#2F4F4F" }} to="/logout"><i className="fas fa-sign-out-alt" style={{ color: "#2F4F4F" }}></i> 로그아웃</Link>
+                <Link className="nav-link" to="/notificationlist">
+                  {/* 알림 */}
+                  {/* <FontAwesomeIcon icon="fa-regular fa-bell" /> */}
+                  <i class="fas fa-bell" style={{ color: "#2F4F4F" }}></i>
+                  &nbsp;  알림
+                  </Link>
               </li>
+
+                  
+
             ) : (
               // 로그인 및 회원가입
               <>

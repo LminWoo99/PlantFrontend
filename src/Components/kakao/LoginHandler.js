@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect , useContext} from "react";
 import axios from "axios";
-import { AuthContext } from "../context/AuthProvider";
-import { HttpHeadersContext } from "../context/HttpHeadersProvider";
+import { AuthContext } from "../../context/AuthProvider";
+import { HttpHeadersContext } from "../../context/HttpHeadersProvider";
 
 
 
@@ -18,7 +18,7 @@ const { headers, setHeaders } = useContext(HttpHeadersContext);
         const kakaoLogin = async () => {
             await axios({
                 method: "GET",
-                url: `/api/oauth2/login/kakao/?code=${code}`,
+                url: `${process.env.REACT_APP_SERVER_URL}/plant-service/api/oauth2/login/kakao/?code=${code}`,
                 headers: {
                     "Content-Type": "application/json;charset=utf-8",
                 
@@ -26,18 +26,24 @@ const { headers, setHeaders } = useContext(HttpHeadersContext);
             }).then((res) => {
                 console.log(res);
                 localStorage.setItem("id", res.data.id);
-                localStorage.setItem("username", res.data.nickname);
+                localStorage.setItem("nickname", res.data.nickname);
                 localStorage.setItem("bbs_access_token", res.data.access_token);
-                
+                localStorage.setItem("username", res.data.username);
                 setAuth(res.data.id);
                 setHeaders({"Authorization": `Bearer ${res.data.jwt}`});
+                localStorage.setItem("email", res.data.email);
+
+                
                 navigate("/bbslist");
+              
+
                 window.location.reload()
             });
         };
 
         kakaoLogin();
     }, [navigate]);
+
 
     return (
         <div className="LoginHandeler">

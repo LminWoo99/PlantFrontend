@@ -6,6 +6,7 @@ import "../../css/BuyInfo.css";
 function BuyInfo() {
   const [buyInfo, setBuyInfo] = useState([]);
   const id = localStorage.getItem("id");
+  const token = localStorage.getItem("bbs_access_token");
 
   useEffect(() => {
     if (id) {
@@ -17,7 +18,11 @@ function BuyInfo() {
 
   const fetchBuyInfo = async (id) => {
     try {
-      const response = await axios.get(`/api/buyInfo/${id}`);
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/buyInfo/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setBuyInfo(response.data);
       console.log(response);
     } catch (error) {
@@ -43,7 +48,6 @@ function BuyInfo() {
       </div>
     </div>
   );
-
 }
 
 export default BuyInfo;

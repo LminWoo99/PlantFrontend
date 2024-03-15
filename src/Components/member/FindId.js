@@ -5,14 +5,19 @@ function FindId() {
   const [email, setEmail] = useState("");
   const [foundId, setFoundId] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-
+  const token = localStorage.getItem("bbs_access_token");
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
 
   const handleFindId = async () => {
     try {
-      const response = await axios.get(`/api/findId?email=${email}`);
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/findId?email=${email}`,
+      {headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+      ;
       const { username } = response.data.username;
       console.log(response.data.username);
       setFoundId(response.data.username);

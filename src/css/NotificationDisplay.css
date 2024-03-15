@@ -1,0 +1,67 @@
+.notification-list {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.notification-item {
+  background-color: #f0f0f0; /* 예시 배경색 */
+  border: 1px solid #d8d8d8; /* 예시 경계선 색 */
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  animation: fadeInRight 0.5s ease forwards;
+}
+
+.notification-image {
+  margin-right: 10px;
+}
+
+.notification-image img {
+  width: 30px; /* 이미지 크기 조정 */
+  height: 30px;
+  border-radius: 15px; /* 원형으로 만들기 */
+}
+
+.notification-text {
+  flex-grow: 1;
+}
+
+.notification-sender {
+  font-weight: bold;
+  margin: 0;
+}
+
+.notification-content {
+  margin: 5px 0;
+}
+
+.notification-link {
+  /* color: #f0f0f0; */
+  text-decoration: none;
+  font-size: 0.8rem;
+}
+
+.notification-close {
+  margin-left: 10px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+/* 애니메이션 효과 */
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

@@ -27,7 +27,7 @@ function ResetPassword() {
 
   const handleFindUser = async () => {
     try {
-      const response = await axios.get(`/api/findPassword?userId=${userId}`);
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/findPassword?userId=${userId}`);
       const memberDto = response.data;
 
       if (!memberDto) {
@@ -45,7 +45,7 @@ function ResetPassword() {
 
   const handleResetPassword = async () => {
     try {
-      const response = await axios.get(`/api/findPassword?userId=${userId}`);
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/findPassword?userId=${userId}`);
       const memberDto = response.data;
   
       if (newPassword !== confirmPassword) {

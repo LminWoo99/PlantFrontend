@@ -2,16 +2,17 @@ import axios from "axios";
 import { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Pagination from "react-js-pagination";
-import { AuthContext } from "../context/AuthProvider";
+import { AuthContext } from "../../context/AuthProvider";
 import "../../css/bbslist.css";
 import "../../css/pageable.css";
+
 
 function BbsList() {
 
 	const [tradeBoardDtos, setTradeBoardDtos] = useState([]);
 	const { auth, setAuth } = useContext(AuthContext)
 
-
+	const token = localStorage.getItem("bbs_access_token");
 	
 	const [searchVal, setSearchVal] = useState("");
 
@@ -23,7 +24,9 @@ function BbsList() {
 	let navigate = useNavigate();
 
 	const getBbsList = async (search, pageable) => {
-		await axios.get("/api/write", { params: { "search": search, "page": pageable-1 } })
+		await axios.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/write`, { params: { "search": search, "page": pageable-1 }, headers: {
+			Authorization: `Bearer ${token}`,
+		  } })
 			.then((resp) => {
 				console.log("[BbsList.js] useEffect() success :D");
 				console.log(resp.data);
@@ -34,7 +37,11 @@ function BbsList() {
 			})
 			.catch((err) => {
 				console.log("[BbsList.js] useEffect() error :<");
-				console.log(err);
+
+				// // console.log(""err);
+				// alert("로그인이 필요한 서비스입니다");
+
+				
 			});
 	}
 
@@ -78,7 +85,7 @@ function BbsList() {
 			</table><br />
 
 			<table className="table table-hover">
-				<thead>
+				{/* <thead>
 					<tr>
 						<th className="col-1">번호</th>
 						<th className="col-6">제목</th>
@@ -89,17 +96,29 @@ function BbsList() {
 						<th className="col-1">⭐️</th>
 						
 					</tr>
-				</thead>
+				</thead> */}
 
-				<tbody>
+				<div className="card-list">
 					{
-						tradeBoardDtos.map(function (tradeBoardDto, idx) {
-							return (
-								<TableRow obj={tradeBoardDto} key={tradeBoardDto.id} cnt={tradeBoardDto.id} />
-							)
-						})
-					}
-				</tbody>
+						  tradeBoardDtos.map((tradeBoardDto, idx) => (
+							<div className="card" key={tradeBoardDto.id}>
+							<div className="card-header">
+							  <Link to={`/bbsdetail/${tradeBoardDto.id}`}>
+								<h5 className="card-title">{tradeBoardDto.title}</h5>
+							  </Link>
+							</div>
+							<div className="card-body">
+							  <p className="card-status">거래상태: {tradeBoardDto.status}</p>
+							  <p className="card-author">작성자 : {tradeBoardDto.createBy}</p>
+							  <p className="card-author">가격 : {tradeBoardDto.price} 원</p>
+							  <p className="card-views">조회수 : {tradeBoardDto.view}</p>
+							  <p className="card-likes">⭐️ {tradeBoardDto.goodCount}</p>
+							</div>
+						  </div>
+						))
+						}
+					
+				</div>
 			</table>
 
 			<Pagination className="pagination"
@@ -120,36 +139,35 @@ function BbsList() {
 }
 
 /* 글 목록 테이블 행 컴포넌트 */
-function TableRow(props) {
-	console.log(props.obj);
-	const tradeBoardDto = props.obj;
+// function TableRow(props) {
+// 	console.log(props.obj);
+// 	const tradeBoardDto = props.obj;
 
-	return (
-			<tr>
-					<th>{props.cnt}</th>
-					{
-						// (tradeBoardDto.del == 0) ?
-						// 삭제되지 않은 게시글
-						<>
-							<td >
+// 	return (
+// 			<tr>
+// 					<th>{props.cnt}</th>
+// 					{
+// 						// 삭제되지 않은 게시글
+// 						<>
+// 							<td >
 
-								<Link to={{ pathname: `/bbsdetail/${tradeBoardDto.id}` }}> { /* 게시글 상세 링크 */}
-									<span className="underline bbs-title" >{tradeBoardDto.title} </span> { /* 게시글 제목 */}
-								</Link>
-							</td>
+// 								<Link to={{ pathname: `/bbsdetail/${tradeBoardDto.id}` }}> { /* 게시글 상세 링크 */}
+// 									<span className="underline bbs-title" >{tradeBoardDto.title} </span> { /* 게시글 제목 */}
+// 								</Link>
+// 							</td>
 							
-							<td>{tradeBoardDto.status}</td>
-							<td>{tradeBoardDto.createBy}</td>
-							<td>{tradeBoardDto.view}</td>
-							<td>{tradeBoardDto.goodCount}</td>
-						</>
+// 							<td>{tradeBoardDto.status}</td>
+// 							<td>{tradeBoardDto.createBy}</td>
+// 							<td>{tradeBoardDto.view}</td>
+// 							<td>{tradeBoardDto.goodCount}</td>
+// 						</>
 					
-					}
+// 					}
 					
 				
-			</tr>
+// 			</tr>
 		
-	);
-}
+// 	);
+// }
 
 export default BbsList;

@@ -1,13 +1,14 @@
 import React, { useContext, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthProvider";
-import { HttpHeadersContext } from "../context/HttpHeadersProvider";
+import { AuthContext } from "../../context/AuthProvider";
+import { HttpHeadersContext } from "../../context/HttpHeadersProvider";
 
 function BbsWrite() {
     const { auth } = useContext(AuthContext);
     const { headers } = useContext(HttpHeadersContext);
-
+    const token = localStorage.getItem("bbs_access_token");
+    const id = localStorage.getItem("id");
     const navigate = useNavigate();
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
@@ -44,6 +45,7 @@ function BbsWrite() {
         }
 
         const tradeBoardDto = {
+            id : id,
             title: title,
             content: content,
 			price: parseInt(price.replace(/,/g, ''))
@@ -51,9 +53,9 @@ function BbsWrite() {
 
         try {
             const response = await axios.post(
-                "/api/write",
+                `${process.env.REACT_APP_SERVER_URL}/plant-service/api/write`,
                 tradeBoardDto,
-                { headers: headers }
+                { headers: headers } 
             );
 
             const tradeBoardId = response.data.id;
@@ -71,7 +73,7 @@ function BbsWrite() {
 
         try {
             await axios.post(
-                `/api/${tradeBoardId}/images`,
+                `${process.env.REACT_APP_SERVER_URL}/plant-service/api/${tradeBoardId}/images`,
                 formData
             );
             alert("새로운 게시글을 성공적으로 등록했습니다 :D");

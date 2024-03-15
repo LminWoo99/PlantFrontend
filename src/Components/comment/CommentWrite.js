@@ -1,12 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { HttpHeadersContext } from "../context/HttpHeadersProvider";
+import { HttpHeadersContext } from "../../context/HttpHeadersProvider";
 import axios from "axios";
 
 function CommentWrite(props) {
   const { headers, setHeaders } = useContext(HttpHeadersContext);
   const showReplyForm = props.data.parentId !== undefined;
-  const username = localStorage.getItem("username");
+  const nickname = localStorage.getItem("nickname");
   
   const id = props.data.id;
   const [isSecret, setIsSecret] = useState(false);
@@ -24,7 +24,7 @@ function CommentWrite(props) {
   };
   const createComment = async () => {
     const requestDto = {
-      username: username,
+      nickname: nickname,
       memberId: memberId,
       content: content,
       tradeBoardId: props.data.tradeBoardId,
@@ -33,7 +33,7 @@ function CommentWrite(props) {
     };
 	console.log(requestDto);
     await axios
-      .post(`/api/comment`, requestDto, { headers: headers })
+      .post(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/comment`, requestDto, { headers: headers })
       .then((resp) => {
         console.log("[CommentWrite.js] createComment() success :D");
         console.log(resp.data);
@@ -68,7 +68,7 @@ function CommentWrite(props) {
         </div>
 
         <div className="col-7">
-          <span className="comment-id">{username}</span>
+          <span className="comment-id">{nickname}</span>
         </div>
         <div className="col-2 my-1 d-flex justify-content-end">
         <label style={{ marginTop: 8, marginRight:3  }}>비밀댓글</label>

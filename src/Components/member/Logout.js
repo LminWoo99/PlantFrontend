@@ -1,6 +1,6 @@
 import { useEffect, useContext } from "react";
 import { useNavigate } from "react-router";
-import { AuthContext } from "../context/AuthProvider";
+import { AuthContext } from "../../context/AuthProvider";
 
 function Logout() {
 
@@ -9,6 +9,7 @@ function Logout() {
 	const navigate = useNavigate();
 	
 	const logout = () => {
+		localStorage.removeItem("nickname");
 		localStorage.removeItem("username");
 		localStorage.removeItem("bbs_access_token");
 		localStorage.removeItem("id");

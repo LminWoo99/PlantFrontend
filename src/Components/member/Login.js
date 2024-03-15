@@ -3,17 +3,21 @@
 import axios from "axios";
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router";
-import { AuthContext } from "../context/AuthProvider";
-import { HttpHeadersContext } from "../context/HttpHeadersProvider";
+import { AuthContext } from "../../context/AuthProvider";
+import { HttpHeadersContext } from "../../context/HttpHeadersProvider";
 import myImage from './kakao_login_small.png';
 import { Link } from "react-router-dom";
 import '../../css/style.css';
+
 const CLIENT_ID = process.env.REACT_APP_REST_API_KEY;
 const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL;
+const SERVER_URL=process.env.REACT_APP_SERVER_URL;
 
 export const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?
 client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 function Login() {
+	console.log(SERVER_URL);
+	const [notifications, setNotifications] = useState([]);
 
 	const { auth, setAuth } = useContext(AuthContext);
 	const { headers, setHeaders } = useContext(HttpHeadersContext);
@@ -22,7 +26,6 @@ function Login() {
 
 	const [username, setusername] = useState("");
 	const [password, setPassword] = useState("");
-	
 	const changeId = (event) => {
 		setusername(event.target.value);
 	}
@@ -37,7 +40,7 @@ function Login() {
 			password: password
 		}
 
-		await axios.post("/api/login", req)
+		await axios.post(`${SERVER_URL}/plant-service/api/login`, req)
 		.then((resp) => {
 			console.log("[Login.js] login() success :D");
 			console.log(resp.data);
@@ -47,14 +50,19 @@ function Login() {
 				// JWT 토큰 저장
 				localStorage.setItem("id", parseInt(resp.data.id));
 				localStorage.setItem("bbs_access_token", resp.data.access_token);
-				localStorage.setItem("username", resp.data.nickname);
+				localStorage.setItem("nickname", resp.data.nickname);
+				localStorage.setItem("username", resp.data.username);
+				localStorage.setItem("email", resp.data.email);
 				
 				
 				setAuth(resp.data.id); // 사용자 인증 정보(아이디 저장)
 				setHeaders({"Authorization": `Bearer ${resp.data.jwt}`}); // 헤더 Authorization 필드 저장
 				
+				
+
 				navigate("/bbslist");
-				window.location.reload()
+				window.location.reload();
+				
 
 		}).catch((err) => {
 			console.log("[Login.js] login() error :<");
@@ -63,6 +71,8 @@ function Login() {
 			alert("⚠️ " + err.response.data);
 		});
 	}
+	// SSE 연결을 초기화하는 함수
+
 
 	return (
 		<div>

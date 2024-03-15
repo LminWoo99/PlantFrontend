@@ -1,60 +1,56 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from "react-router-dom";
+import { HttpHeadersContext } from "../../context/HttpHeadersProvider";
+
 
 function BuyerSelection() {
-  const [selectedBuyer, setSelectedBuyer] = useState('');
-  const [comments, setComments] = useState([]);
-  const { id } = useParams(); 
+  const [selectedBuyer, setSelectedBuyer] = useState(''); // 구매자 닉네임 상태
+  const { id, nickname } = useParams(); // URL 파라미터에서 id 추출
   let navigate = useNavigate();
-  console.log(id);
-  useEffect(() => {
-    
-    axios.get(`/api/buyer/${id}`) 
-      .then((response) => {
-        
-        const commentNicknames = response.data.map((comment) => comment.nickname);
-        setComments(commentNicknames);
-        console.log(commentNicknames);
-      })
-      .catch((error) => {
-        console.error('댓글 데이터를 가져오는 중 오류 발생: ', error);
-      });
-  }, []);
 
-  const handleBuyerChange = (event) => {
-    setSelectedBuyer(event.target.value);
-  };
+  const { headers, setHeaders } = useContext(HttpHeadersContext);
 
   const setBuyer = async () => {
     const tradeBoardDto = {
-      buyer: selectedBuyer,
+      buyer: nickname,
     };
-    console.log(tradeBoardDto);
-    await axios
-      .post(`/api/buyer/${id}`, tradeBoardDto)
-      .then((response) => {
-        console.log('구매자 정보 설정 완료: ', response.data);
-        console.log(tradeBoardDto.buyer);
-        navigate(`/bbsdetail/${id}`);
-      })
-      .catch((error) => {
-        console.error('구매자 정보 설정 중 오류 발생: ', error);
-      });
-  };
+  
+    try {
+      // 첫 번째 요청: 구매자 설정
+      const response = await axios.post(
+        `${process.env.REACT_APP_SERVER_URL}/plant-service/api/buyer/${id}`,
+        tradeBoardDto,
+        { headers: headers }
+      );
+      console.log(response);
+  
+      // 첫 번째 요청이 성공하면, 상태 업데이트 요청
+      if (response.status === 200) {
+        const updateResponse = await axios.put(
+          `${process.env.REACT_APP_SERVER_URL}/plant-service/api/updateStatus/${id}`,
+          {}, // PUT 요청의 경우, 별도의 데이터가 필요하지 않은 경우 빈 객체 전달
+          { headers: headers }
+        );
+  
+        // 상태 업데이트 요청이 성공하면, 특정 페이지로 이동
+        if (updateResponse.status === 200) {
 
+          navigate(`/bbsdetail/${id}`);
+        }
+      }
+    } catch (error) {
+      console.error('요청 처리 중 오류 발생: ', error);
+    }
+  };
   return (
     <div>
-      <select value={selectedBuyer} onChange={handleBuyerChange}>
-        <option value="">구매자 선택</option>
-        {comments.map((comment, index) => (
-          <option key={index} value={comment}>
-            {comment}
-          </option>
-        ))}
-      </select>
-      <button onClick={setBuyer}>구매자 선택</button>
 
+        <div>
+          <strong>선택된 구매자: {nickname}</strong>
+          <button onClick={setBuyer}>구매자 선택 확인</button>
+        </div>
+      
     </div>
   );
 }

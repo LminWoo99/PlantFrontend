@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import myImage from './스크린샷 2023-09-04 오후 6.41.40.png';
+import { HttpHeadersContext } from "../../context/HttpHeadersProvider";
 function PlantDetail() {
   const [plantDto, setPlantDto] = useState({});
   const { id } = useParams();
+  const { headers, setHeaders } = useContext(HttpHeadersContext);
 
   useEffect(() => {
     async function fetchPlantDetail() {
       try {
-        const response = await axios.get(`/api/plantList/${id}`);
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/plantList/${id}`, { headers: headers });
         setPlantDto(response.data);
       } catch (error) {
         console.error("[PlantDetail.js] fetchPlantDetail() error:", error);

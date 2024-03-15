@@ -22,7 +22,7 @@ console.log(reply);
         };
 
         await axios
-            .put(`/api/comment/${reply.id}`, req, { headers: headers })
+            .put(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/comment/${reply.id}`, req, { headers: headers })
             .then((resp) => {
                 console.log("[Reply.js] updateReply() success :D");
                 console.log(reply.id);
@@ -37,7 +37,7 @@ console.log(reply);
 
     const deleteReply = async () => {
         await axios
-            .delete(`/api/comment/${reply.id}`)
+            .delete(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/comment/${reply.id}`)
             .then((resp) => {
                 console.log("[Reply.js] deleteReply() success :D");
                 alert("대댓글을 성공적으로 삭제했습니다 :D");

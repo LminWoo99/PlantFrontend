@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom"
-import { AuthContext } from "../context/AuthProvider";
-import { HttpHeadersContext } from "../context/HttpHeadersProvider";
+import { AuthContext } from "../../context/AuthProvider";
+import { HttpHeadersContext } from "../../context/HttpHeadersProvider";
 import CommentWrite from "./CommentWrite";
 import "../../css/comment.css"
 function Comment(props) {
@@ -17,7 +17,7 @@ function Comment(props) {
 	const [show, setShow] = useState(false);
 	const [content, setContent] = useState(comment.content);
 
-	const username=localStorage.getItem("username");
+	const nickname=localStorage.getItem("nickname");
 	
 	const currentUserId = localStorage.getItem("id");
 
@@ -39,7 +39,7 @@ function Comment(props) {
 	  };
   console.log(req);
 	  await axios
-		.put(`/api/comment/${comment.id}`, req, { headers: headers })
+		.put(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/comment/${comment.id}`, req, { headers: headers })
 		.then((resp) => {
 		  console.log("[Comment.js] updateComment() success :D");
 		  console.log(resp);
@@ -59,7 +59,7 @@ function Comment(props) {
   
 	const deleteComment = async () => {
 	  await axios
-		.delete(`/api/comment/${comment.id}`)
+		.delete(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/comment/${comment.id}`, { headers: headers })
 		.then((resp) => {
 		  console.log("[BbsComment.js] deleteComment() success :D");
 		  console.log(resp.data);
@@ -162,7 +162,7 @@ function Comment(props) {
 			{/* 댓글 내용 */}
 			<div className="my-3 d-flex justify-content-center">
 			<div className="col-10 comment">
-			{((comment.memberId == currentUserId) || (tradeId == username) ) ? content : (isSecretComment ? "비밀 댓글입니다" : content)}
+			{((comment.memberId == currentUserId) || (tradeId == nickname) ) ? content : (isSecretComment ? "비밀 댓글입니다" : content)}
 			</div>
 			</div>
 		  </>

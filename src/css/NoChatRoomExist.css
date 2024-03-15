@@ -1,0 +1,52 @@
+.no-chat-room {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: gray;
+    color: white;
+
+  }
+  
+  .no-chat-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 20px;
+  }
+  
+  .back-arrow {
+    position: absolute;
+    left: 20px;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: white;
+  }
+  
+  .header-title {
+    font-size: 1.5rem;
+  }
+  
+  .divider {
+    width: 100%;
+    border-bottom: 1px solid #ffffff;
+    margin-top: 20px;
+  }
+  
+  .no-chat-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+  }
+  
+
+  .no-chat-text {
+    margin-top: 20px;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: white;
+    text-align: center;
+  }
+  

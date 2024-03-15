@@ -6,6 +6,7 @@ import "../../css/MyTradeInfo.css"
 function MyTradeInfo() {
   const [tradeList, setTradeList] = useState([]);
   const [activeTab, setActiveTab] = useState("판매중");
+  const token = localStorage.getItem("bbs_access_token");
   const memberId = localStorage.getItem("id");
 
   useEffect(() => {
@@ -18,11 +19,15 @@ function MyTradeInfo() {
 
   const fetchTradeList = async (id) => {
     try {
-      const response = await axios.get(`/api/tradeInfo/${id}`);
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/tradeInfo/${id}`,{headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
       setTradeList(response.data);
       console.log(response);
     } catch (error) {
-      console.error("Error fetching trade list:", error);
+    
+      alert(error);
     }
   };
 

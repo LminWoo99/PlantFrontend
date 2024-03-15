@@ -1,0 +1,90 @@
+.list_notification-link {
+    /* background-color: #007bff; */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.list_notification-link:hover {
+    background-color: #0056b3;
+}
+
+
+.list_notification-content {
+    margin-bottom: 10px;
+}
+
+.list_notification-type {
+    font-weight: bold;
+    color: black;
+}
+
+.list_notification-message {
+    margin-left: 10px;
+}
+
+.list_notification-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+}
+
+.list_notification-sender {
+    font-weight: bold;
+    margin-right: 10px; /* Adds right margin to the sender's name */
+
+}
+
+/* list_NotificationList.css modifications */
+.list_notification-list {
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+    background: #eee; /* This will set the background color for the entire list */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: adds shadow for depth */
+}
+
+.list_notification-item {
+    border-bottom: 2px solid #333; /* Make the border under each item more pronounced */
+    padding: 15px 0;
+    position: relative; /* For the positioning of the unread indicator */
+}
+
+.list_notification-item.read {
+    background-color: #f0f0f0c0;
+}
+
+/* Add this for the unread list_notifications indicator */
+.list_notification-unread-indicator {
+    height: 10px;
+    width: 10px;
+    background-color: red;
+    border-radius: 50%;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+/* Your existing CSS continues */
+.list_notification-link {
+    color: #007bff;
+    text-decoration: none;
+    padding: 5px 10px; /* Adjust padding as needed */
+    margin-left: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #007bff; /* Adds background color to the link */
+    color: white; /* Change the text color to white for better contrast */
+}
+.list_notification-delete {
+    background-color: #f44336; /* Red color for delete button */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin-left: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }

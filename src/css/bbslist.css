@@ -2,3 +2,72 @@
     text-decoration: underline;
     cursor: pointer;
 }
+.card-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .card {
+    background-color: #f8f8f8; /* 기존 색상 유지 */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px; /* 카드 너비, 자유롭게 조정 가능 */
+    margin: 10px;
+    overflow: hidden;
+  }
+  
+  .card-content {
+    padding: 20px;
+  }
+  
+  .card-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .card-info {
+    font-size: 0.9em;
+  }
+  
+  .card-status, .card-author, .card-views, .card-likes {
+    margin-top: 5px;
+  }
+  @media only screen and (max-width: 768px) {
+    .card-list {
+      justify-content: space-around;
+    }
+  
+    .card {
+      width: calc(50% - 20px); /* 화면이 작을 때는 카드 2개씩 보이도록 조정 */
+      margin-bottom: 20px; /* 카드 사이의 간격을 조금 더 줍니다 */
+    }
+  
+    .card-content {
+      padding: 15px; /* 카드 내부 패딩을 조금 줄입니다 */
+    }
+  
+    .card-title {
+      font-size: 1em; /* 제목 글자 크기를 줄입니다 */
+    }
+  
+    .card-info {
+      font-size: 0.8em; /* 정보 글자 크기를 줄입니다 */
+    }
+  }
+  
+  /* 태블릿 기기 */
+  @media only screen and (min-width: 769px) and (max-width: 1024px) {
+    .card {
+      width: calc(33.333% - 20px); /* 화면이 중간 크기일 때는 카드 3개씩 보이도록 조정 */
+    }
+  }
+  
+  /* 데스크탑 */
+  @media only screen and (min-width: 1025px) {
+    .card {
+      width: calc(25% - 20px); /* 화면이 클 때는 카드 4개씩 보이도록 조정 */
+    }
+  }
