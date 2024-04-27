@@ -24,7 +24,12 @@ function PlantList() {
         setTotalCnt(response.data.totalElements);
       })
       .catch((error) => {
-        console.error(error);
+        const resp = error.response.data;
+        console.log(resp);
+        if (resp.errorCodeName === "017"){
+          alert(resp.message);
+        }
+
       });
   };
 

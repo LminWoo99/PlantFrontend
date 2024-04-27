@@ -45,9 +45,12 @@ function CommentWrite(props) {
         }
       })
       .catch((err) => {
-        console.log("[CommentWrite.js] createComment() error :<");
-        console.log(err);
-        console.log(requestDto.parentId);
+        const resp = err.response.data;
+        console.log(resp);
+        if (resp.errorCodeName === "009"){
+          alert(resp.message);
+
+        }
       });
   };
 

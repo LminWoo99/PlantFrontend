@@ -84,9 +84,11 @@ function BbsDetail() {
                 }
             })
             .catch((err) => {
-                console.log("[BbsDetail.js] getBbsDetail() error :<");
-                console.log(tradeBoardDto.id);
-                console.log(err);
+                const resp = err.response.data;
+                console.log(resp);
+                if (resp.errorCodeName === "016"){
+                alert(resp.message);
+                }
             });
     };
     const getBbsView = async () => {
@@ -99,6 +101,7 @@ function BbsDetail() {
             .catch((err) => {
                 console.log("[BbsDetail.js] getBbsView() error :<");
                 console.log(err);
+                
             });
     };
 
@@ -154,7 +157,11 @@ function BbsDetail() {
                 window.location.reload();
             }
         } catch (error) {
-            console.error("Error adding to wishlist:", error);
+            const resp = error.response.data;
+            console.log(resp);
+            if (resp.errorCodeName === "016"){
+            alert(resp.message);
+            }
         }
     };
     const getReplyList = async () => {
@@ -193,7 +200,12 @@ function BbsDetail() {
                 setGoodStatus(false);
             }
         } catch (error) {
-            console.error("Error getting trade status:", error);
+            const resp = error.response.data;
+            console.log(resp);
+            if (resp.errorCodeName === "007"){
+            alert(resp.message);
+
+            }
         }
     };
 
@@ -267,13 +279,17 @@ const handleChatClick = async () => {
         console.log(response);
         const chatNo = response.data.data.chatNo;
         console.log(chatNo);
-        navigate(`/chatroom/${chatNo}/${chatRequestDto.tradeBoardNo}/${tradeBoardDto.nickname}`);
+        navigate(`/chatroom/${chatNo}/${chatRequestDto.tradeBoardNo}/${tradeBoardDto.createBy}`);
 
         
         
         }
     } catch (error) {
-        console.error("Error creating chat room:", error);
+        const resp = error.response.data;
+        console.log(resp);
+        if (resp.errorCodeName === "016"){
+          alert(resp.message);
+        }
     }
 };
 

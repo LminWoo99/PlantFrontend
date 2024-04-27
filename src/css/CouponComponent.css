@@ -1,0 +1,90 @@
+/* CouponComponent.css */
+.coupon-container {
+    text-align: center;
+    padding: 40px;
+    background: #E8F5E9; /* Light green background for the whole container */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Adding some shadow for depth */
+    max-width: 600px;
+    margin: 50px auto;
+  }
+  
+  .event-title {
+    color: #4E342E; /* A deeper color for the title */
+    margin-bottom: 30px;
+  }
+    
+  .event-subtitle {
+    color: rgb(188, 66, 39); /* A deeper color for the title */
+
+  }
+  
+  
+  .coupon {
+    display: inline-block;
+    padding: 20px;
+    
+    background: linear-gradient(135deg, #FFCDD2 50%, #E57373 50%); /* Gradient for coupon look */
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Adding some shadow for depth */
+    position: relative;
+    overflow: hidden; /* Needed for pseudo-elements to be contained within the button */
+  }
+  
+  .coupon-button {
+    background-color: #028a62;
+    color: #FFFFFF;
+    padding: 15px 30px;
+    border: 2px dashed #B71C1C; /* Dashed border to mimic a coupon cutout */
+    font-size: 24px;
+    cursor: pointer;
+    outline: none;
+  }
+  
+  .coupon-text {
+    position: relative;
+    z-index: 2; /* Ensure the text appears above the pseudo-elements */
+  }
+  
+  .coupon-button::before,
+  .coupon-button::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 24px;
+    background: #B71C1C; /* Color to match dashed border */
+    top: -24px;
+    left: 0;
+  }
+  
+  .coupon-button::after {
+    top: auto;
+    bottom: -24px;
+  }
+  
+  .coupon-button:hover {
+    background-color: #C62828; /* Darker shade for hover state */
+    color: #FFFFFF;
+  }
+  
+  .coupon-claimed,
+  .coupon-ended {
+    font-size: 20px;
+    border-radius: 10px;
+    padding: 15px;
+    display: inline-block;
+  }
+  
+  .coupon-claimed {
+    background-color: #81C784; /* Success color */
+  }
+  
+  .coupon-ended {
+    background-color: #E57373; /* Alert color */
+  }
+  
+  .event-waiting {
+    color: #6D4C41; /* Color for the waiting message */
+    font-size: 24px;
+  }
+  

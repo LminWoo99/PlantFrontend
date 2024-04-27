@@ -1,0 +1,104 @@
+.sns-post-form {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 24px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+  }
+  
+  .sns-post-form h2 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+  
+  .sns-post-form label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #333;
+  }
+  
+  .sns-post-form input,
+  .sns-post-form textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 16px;
+    transition: border-color 0.3s ease;
+  }
+  
+  .sns-post-form input:focus,
+  .sns-post-form textarea:focus {
+    outline: none;
+    border-color: #0095f6;
+  }
+  
+  .sns-post-form textarea {
+    height: 120px;
+    resize: vertical;
+  }
+  
+  .sns-post-form .hashtags-input {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  
+  .sns-post-form .hashtags-input input {
+    flex-grow: 1;
+    margin-right: 12px;
+  }
+  
+  .sns-post-form .image-upload {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  
+  .sns-post-form .image-upload label {
+    margin-right: 12px;
+  }
+  
+  .sns-post-form .image-upload input[type="file"] {
+    flex-grow: 1;
+  }
+  
+  .sns-post-form button[type="submit"] {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #0095f6;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .sns-post-form button[type="submit"]:hover {
+    background-color: #0077b6;
+  }
+  .comment-menu-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    /* 스타일을 더 추가할 수 있습니다. */
+  }
+  
+  .delete-comment-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: red;
+    /* 스타일을 더 추가할 수 있습니다. */
+  }

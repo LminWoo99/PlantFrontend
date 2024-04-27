@@ -22,12 +22,12 @@ function ImageGalleryComponent({ imageUrls }) {
             <ImageGallery
                 items={images}
                 showPlayButton={false}
-                showFullscreenButton={true}
+                showFullscreenButton={false}
                 showBullets={true}
                 slideDuration={150}
                 lazyLoad={true}
-                showNav={false}
-                showThumbnails={true}
+                showNav={true}
+                showThumbnails={false}
                 additionalClass="image-gallery-custom"
             />
         </div>

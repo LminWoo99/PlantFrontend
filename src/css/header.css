@@ -1,20 +1,57 @@
-.logo {
-  position: relative;
-  bottom: 10px;
-  margin-top: 80px;
-  width: 80px; /* 이미지의 가로 크기 조절 */
-  height: 80px; /* 이미지의 세로 크기 조절 */
-}
 .header {
-    display: flex; /* Flexbox 사용 */
-    align-items: center; /* 수직 가운데 정렬 */
-    position: relative;
-    height: 240px;
-    color: #04B486;
-    
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Added for vertical centering */
+  position: relative;
+  height: auto;
+  color: #04B486;
+  padding-top: 20px;
+  padding-bottom: 20px; /* Added for some space at the bottom */
+}
 
-.title {
-    align-items: center;
-    
+.logo {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 10px; /* Adjusted for space between logo and title */
+}
+
+h1 {
+  margin-bottom: 20px; /* Space between title and buttons */
+}
+
+.nav-buttons {
+  display: flex;
+  justify-content: center; /* Centers the buttons horizontally */
+  align-items: center; /* Aligns items vertically */
+  flex-wrap: wrap; /* Allows buttons to wrap on small screens */
+  gap: 30px; /* This creates space between the buttons */
+}
+
+.nav-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Centers the icon and text vertically inside the button */
+  background-color: #E8F5E9;
+  color: #04B486;
+  padding: 10px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-size: 1.2em;
+  transition: transform 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.nav-button:hover {
+  transform: translateY(-2px);
+}
+
+.nav-button i {
+  font-size: 24px; /* Icon size */
+  margin-bottom: 8px; /* Space between icon and text */
+}
+
+.nav-button span {
+  display: block; /* This makes the text go under the icon */
 }

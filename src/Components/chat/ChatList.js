@@ -37,6 +37,11 @@ const ChatList = () => {
         console.log(data);
       } catch (error) {
         console.error('There has been a problem with your fetch operation:', error);
+        const resp = error.response.data;
+        console.log(resp);
+        if (resp.errorCodeName === "015"){
+          alert(resp.message);
+        }
       }
     };
 

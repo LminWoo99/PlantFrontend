@@ -57,12 +57,17 @@ const NotificationList = () => {
             try {
                 const response = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/plant-chat-service/notification`, {
                     headers: { Authorization: `Bearer ${token}` },
-                    data: { idList: [notification.id] } // DELETE 요청에서 body를 보내기 위해 `data` 키를 사용합니다.
+                    data: { idList: [notification.id] } 
                 });
                 // 삭제가 성공적으로 이루어지면, UI에서 해당 알림을 제거합니다.
                 setNotifications(prevNotifications => prevNotifications.filter(n => n.id !== notification.id));
             } catch (error) {
-                console.error("Failed to delete notification", error);
+                const resp = error.response.data;
+                console.log(resp);
+                if (resp.errorCodeName === "020"){
+                alert(resp.message);
+
+                }
             }
         };
 

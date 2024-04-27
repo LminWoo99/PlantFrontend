@@ -10,7 +10,8 @@ import ErrorBoundary from "./Components/error/ErrorBoundary";
 import "./css/style.css"
 import "./index.css";
 import NotificationsDisplay from "./Components/notification/NotificationDisplay";
-
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 function App() {
 

@@ -34,7 +34,7 @@ const { headers, setHeaders } = useContext(HttpHeadersContext);
                 localStorage.setItem("email", res.data.email);
 
                 
-                navigate("/bbslist");
+                navigate("/");
               
 
                 window.location.reload()

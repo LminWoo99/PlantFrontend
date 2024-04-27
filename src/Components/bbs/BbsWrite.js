@@ -74,13 +74,17 @@ function BbsWrite() {
         try {
             await axios.post(
                 `${process.env.REACT_APP_SERVER_URL}/plant-service/api/${tradeBoardId}/images`,
-                formData
+                formData,
+                { headers: headers } 
             );
             alert("새로운 게시글을 성공적으로 등록했습니다 :D");
             navigate(`/bbsdetail/${tradeBoardId}`);
         } catch (error) {
-            console.log("이미지 업로드 에러:", error);
-            alert("이미지 업로드 중 에러가 발생했습니다.");
+                const resp = error.response.data;
+                console.log(resp);
+                if (resp.errorCodeName === "008"){
+                alert(resp.message);
+                }
         }
     }
 
