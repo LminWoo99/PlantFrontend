@@ -16,7 +16,7 @@ api.interceptors.response.use(
     const originalRequest = error.config;
 
     // 로그인 필요 에러 처리
-    if (error.response.status === 401 && error.response.data === '로그인이 필요한 서비스입니다.') {
+    if (error.response.status === 401 && localStorage.getItem("bbs_access_token")==null) {
       alert('로그인이 필요합니다. 로그인 페이지로 이동합니다.');
       // 로그인 페이지로 리다이렉트
       window.location.href = '/login';
@@ -24,7 +24,7 @@ api.interceptors.response.use(
     }
 
     // JWT 토큰 만료 처리
-    if (error.response.status === 401 && error.response.data === 'Jwt token is not vaild') {
+    if (error.response.status === 401 || error.response.data === 'Jwt token is not vaild') {
         console.log(token)
       if (token) {
         try {

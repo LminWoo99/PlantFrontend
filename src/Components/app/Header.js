@@ -13,6 +13,10 @@ function Header() {
             <i className="fas fa-home"></i>
             <span>Home</span>
           </Link>
+          <Link className="nav-button" to="/myaccount">
+            <i className="fas fa-laugh-beam"></i>
+            <span>나의 식구</span>
+          </Link>
           <Link className="nav-button" to="/bbslist">
             <i className="fas fa-leaf"></i>
             <span>식구 거래</span>

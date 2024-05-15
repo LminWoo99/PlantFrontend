@@ -22,7 +22,7 @@ function BuyerSelection() {
     try {
       const response = await api.post(
         `${process.env.REACT_APP_SERVER_URL}/plant-service/api/buyer/${id}`,
-        { nickname: selectedBuyer },
+        { buyer: selectedBuyer },
         { headers }
       );
       if (response.status === 200) {

@@ -10,7 +10,7 @@ export const NotificationProvider = ({ children }) => {
   const memberNo = localStorage.getItem('id');
   const jwtToken = localStorage.getItem('bbs_access_token'); // JWT 토큰을 로컬 스토리지 또는 적절한 곳에서 불러옵니다.
   useEffect(() => {
-    const eventSource = new EventSourcePolyfill(`http://localhost:8000/plant-chat-service/notification/connect`, {
+    const eventSource = new EventSourcePolyfill(`https://api.sikguhaza.site:8443/plant-chat-service/notification/connect`, {
       headers: {
         'Authorization': `Bearer ${jwtToken}`,
       

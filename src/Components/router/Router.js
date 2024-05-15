@@ -35,6 +35,7 @@ import SearchResultsComponent from "../sns/SearchResultsComponent";
 import TopPostsWeek from "../sns/TopPostsWeek";
 import TopPostsMonth from "../sns/TopPostsMonth";
 import TopHashTags from "../sns/TopHashTags";
+import ModalComponent from "../sns/ModalComponent";
 
 function Router() {
 
@@ -73,6 +74,7 @@ function Router() {
 				<Route path="/paymentpage" element={<PaymentPage />}></Route>
 
 				<Route path="/snspostlist" element={<SnsPostList />}></Route>
+				<Route path="/snspostlist/:postId" element={<SnsPostList />} />
 				<Route path="/snspostform" element={<SnsPostForm />}></Route>
 				<Route path="/profile/:createdBy" element={<SnsProfile />}></Route>
 				<Route path="/search-results" element={<SearchResultsComponent />} />

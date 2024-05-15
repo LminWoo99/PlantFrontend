@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import moment from 'moment';
+import api from "../api";
 import '../../css/NotificationList.css';
-import api from "../api"
 
 const NotificationList = () => {
     const token = localStorage.getItem("bbs_access_token");
     const memberNo = window.localStorage.getItem("id");
     const [notifications, setNotifications] = useState([]);
+    console.log(notifications);
 
     useEffect(() => {
         const fetchNotifications = async () => {
@@ -23,7 +22,6 @@ const NotificationList = () => {
 
         fetchNotifications();
     }, [memberNo]);
-    
 
     const NotificationItem = ({ notification }) => {
         const [senderName, setSenderName] = useState('');
@@ -31,7 +29,7 @@ const NotificationList = () => {
         useEffect(() => {
             const fetchSenderName = async () => {
                 try {
-                    const response =await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/user/pk?id=${notification.senderNo}`, { 
+                    const response = await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/user/pk?id=${notification.senderNo}`, { 
                         headers: { Authorization: `Bearer ${token}` }
                     });
                     setSenderName(response.data.nickname); 
@@ -40,51 +38,87 @@ const NotificationList = () => {
                 }
             };
 
-            fetchSenderName(); // 이 함수를 호출해야 합니다.
-        }, [notification.senderId, token]); // senderId가 변경될 때마다 호출됩니다.
+            fetchSenderName();
+        }, [notification.senderNo, token]);
 
         const handleViewClick = async (event) => {
-            // event.preventDefault(); // 기본 이벤트를 방지합니다.
             try {
-                
-                const response = await api.patch(`${process.env.REACT_APP_SERVER_URL}/plant-chat-service/notification/checked/${notification.id}`, {}, {
+                await api.patch(`${process.env.REACT_APP_SERVER_URL}/plant-chat-service/notification/checked/${notification.id}`, {}, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
             } catch (error) {
                 console.error("Failed to update notification status", error);
             }
         };
+
         const handleDeleteClick = async () => {
             try {
-                const response = await api.delete(`${process.env.REACT_APP_SERVER_URL}/plant-chat-service/notification`, {
+                await api.delete(`${process.env.REACT_APP_SERVER_URL}/plant-chat-service/notification`, {
                     headers: { Authorization: `Bearer ${token}` },
                     data: { idList: [notification.id] } 
                 });
-                // 삭제가 성공적으로 이루어지면, UI에서 해당 알림을 제거합니다.
                 setNotifications(prevNotifications => prevNotifications.filter(n => n.id !== notification.id));
             } catch (error) {
                 const resp = error.response.data;
                 console.log(resp);
-                if (resp.errorCodeName === "020"){
-                alert(resp.message);
-
+                if (resp.errorCodeName === "020") {
+                    alert(resp.message);
                 }
             }
         };
 
+        const renderNotificationContent = () => {
+            switch (notification.type) {
+                case "댓글":
+                    return `${senderName}님이 회원님의 게시글에 댓글을 남겼습니다.`;
+                case "찜":
+                    return `${senderName}님이 회원님의 중고 거래글을 찜하셨습니다.`;
+                case "좋아요":
+                    return `${senderName}님이 회원님의 게시글에 좋아요를 누르셨습니다.`;
+                case "채팅":
+                default:
+                    return notification.content;
+            }
+        };
+
+        const getNotificationClass = () => {
+            switch (notification.type) {
+                case "댓글":
+                    return "sns-comment";
+                case "찜":
+                    return "tradeboard-goods";
+                case "좋아요":
+                    return "sns-heart";
+                case "채팅":
+                default:
+                    return "chat";
+            }
+        };
+
+        // Function to format the date
+        const formatDate = (dateString) => {
+            console.log(dateString);
+
+            const year = dateString[0]
+            const month = dateString[1]
+            const day = dateString[2]
+            const hours = dateString[3]
+            const minutes = dateString[4]
+            return `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분`;
+        };
+
         return (
-            <div className={`list_notification-item ${notification.checked ? 'read' : ''}`}>
+            <div className={`list_notification-item ${getNotificationClass()} ${notification.checked ? 'read' : ''}`}>
                 {!notification.checked && <span className="list_notification-unread-indicator"></span>}
                 <div className="list_notification-content">
                     <span className="list_notification-type">{notification.type}</span>
                 </div>
                 <div className="list_notification-content">
-                    <span className="list_notification-sender">{senderName}</span>
-                    <span className="list_notification-message">{notification.content}</span>
-                    </div>
-                
+                    <span className="list_notification-sender">{notification.type === "채팅" ? senderName : ''}</span>
+                    <span className="list_notification-message">{renderNotificationContent()}</span>
+                </div>
                 <div className="list_notification-meta">
-                    <span className="list_notification-date">{moment(notification.publishedAt).format('YY년 MM월 DD일 HH시')}</span>
+                    <span className="list_notification-date">{formatDate(notification.publishedAt)}</span>
                     <a href={notification.url} onClick={handleViewClick} className="list_notification-link">View</a>
                     <button onClick={handleDeleteClick} className="list_notification-delete">알림 삭제</button>
                 </div>

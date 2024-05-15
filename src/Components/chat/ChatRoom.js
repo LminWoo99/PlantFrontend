@@ -1,27 +1,26 @@
-import React, { useEffect, useRef, useState , useContext} from 'react';
+import React, { useEffect, useRef, useState, useContext } from 'react';
 import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
 import '../../css/ChatRoom.css'; // CSS 파일 임포트
-import { Link } from 'react-router-dom';
-import { useParams, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthProvider";
-import axios from "axios";
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthProvider';
+import axios from 'axios';
 import CouponModal from '../coupon/CouponModal';
-import api from "../api"
+import api from '../api';
 
 function ChatRoom() {
     const { id, tradeBoardNo, nickname } = useParams();
     const { auth, setAuth } = useContext(AuthContext);
     const [messages, setMessages] = useState([]);
     const [inputMessage, setInputMessage] = useState('');
-    const [showPaymentPopup, setShowPaymentPopup] = useState(false)
+    const [showPaymentPopup, setShowPaymentPopup] = useState(false);
     const stompClient = useRef(null);
     const memberId = JSON.parse(window.localStorage.getItem('id'));
     const messagesEndRef = useRef(null); 
     const email = window.localStorage.getItem('email');
-    const mineNickname=window.localStorage.getItem('username');
-    const [receiverNo, setReceiverNo] =useState();
-    const [isMine, setIsMine]=useState(false);
+    const mineNickname = window.localStorage.getItem('username');
+    const [receiverNo, setReceiverNo] = useState();
+    const [isMine, setIsMine] = useState(false);
     const [price, setPrice] = useState(0);
     const [sellerNo, setSellerNo] = useState(0);
     const navigate = useNavigate();
@@ -31,7 +30,7 @@ function ChatRoom() {
     const [selectedCoupon, setSelectedCoupon] = useState(null); 
     const [showCouponsModal, setShowCouponsModal] = useState(false);
     const [discountedPrice, setDiscountedPrice] = useState(price);
-    const [discount, setDiscount]=useState(0);
+    const [discount, setDiscount] = useState(0);
 
     useEffect(() => {
         console.log(memberId);
@@ -42,20 +41,19 @@ function ChatRoom() {
         })
         .then((response) => {
             setPayMoney(response.data.payMoney);
-
         })
         .catch((error) => {
             console.error('Error fetching pay money:', error);
         });
-        }, [payMoney]);
+    }, [payMoney]);
 
-        useEffect(() =>{
-          
-            fetchCoupons();
-            initInfo();
-        }, [id]);
     useEffect(() => {
-        const socket = new SockJS(`http://localhost:8000/plant-chat-service/chat`, null);
+        fetchCoupons();
+        initInfo();
+    }, [id]);
+
+    useEffect(() => {
+        const socket = new SockJS(`https://api.sikguhaza.site:8443/plant-chat-service/chat`, null);
         stompClient.current = Stomp.over(socket);
         stompClient.current.connect({
             Authorization: window.localStorage.getItem('bbs_access_token'),
@@ -63,21 +61,17 @@ function ChatRoom() {
             keepalive: true
         }, () => {
             console.log('Connected to WebSocket');
-    
-            // 연결 성공 시 메시지 구독
             stompClient.current.subscribe(`/subscribe/public/${id}`, (message) => {
                 console.log(message);
-                fetchChattingHistory()
-                
+                fetchChattingHistory();
             },{
                 Authorization: window.localStorage.getItem('bbs_access_token'),
             });
             if (window.localStorage.getItem('bbs_access_token')) {
                 fetchChattingHistory();
-                
             }
         });
-    
+
         return () => {
             if (stompClient.current) {
                 stompClient.current.disconnect(() => {
@@ -87,33 +81,32 @@ function ChatRoom() {
             }
         };
     }, [id]);
-    
-    useEffect(() =>{
+
+    useEffect(() => {
         messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    },[messages]);
+    }, [messages]);
+
     async function initInfo(){
-        const resp= await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/${tradeBoardNo}`, {
+        const resp = await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/${tradeBoardNo}`, {
             headers: {
                 Authorization: window.localStorage.getItem('bbs_access_token'),
             },
-            
         });
-        console.log(resp)
+        console.log(resp);
         setPrice(resp.data.price);
-        setSellerNo(resp.data.memberId)
-        if (resp.data.memberId==memberId){
+        setSellerNo(resp.data.memberId);
+        if (resp.data.memberId === memberId){
             setIsMine(true);
         }
     }
+
     async function disconnectChat() {
         await api.post(`${process.env.REACT_APP_SERVER_URL}/plant-chat-service/chatroom/${id}?username=${mineNickname}`,
         {
             headers: {
                 Authorization: window.localStorage.getItem('bbs_access_token'),
             },
-        }
-        
-        )
+        })
             .then(response => {
                 console.log("Chatroom disconnected successfully");
             })
@@ -121,19 +114,24 @@ function ChatRoom() {
                 console.error("Error disconnecting chatroom:", error);
             });
     }
+
     const onApplyCoupon = (coupon) => {
+        if (price < 10000) {
+            alert("쿠폰은 거래금액이 10,000원 이상부터 사용 가능합니다.");
+            return;
+        }
 
         const discountAmount = coupon.discountPrice;
         const calculatedPrice = Math.max(price - discountAmount, 0);
         setDiscountedPrice(calculatedPrice);
         setSelectedCoupon(coupon);
         setShowCouponsModal(false);
-        setDiscount(discountAmount)
-      };
-       // 채팅 내역 조회
-       async function fetchChattingHistory() {
+        setDiscount(discountAmount);
+    };
+
+    async function fetchChattingHistory() {
         try {
-            const response =await api.get(
+            const response = await api.get(
                 `${process.env.REACT_APP_SERVER_URL}/plant-chat-service/chatroom/${id}?memberNo=${memberId}`, 
                 {
                     headers: {
@@ -144,14 +142,13 @@ function ChatRoom() {
             console.log(response);
             if (response) {
                 const chattingList = response.data.chatList.map((chat, index, array) => {
-                    setReceiverNo(chat.receiverNo)
+                    setReceiverNo(chat.receiverNo);
                     const DATE = new Date(chat.sendDate);
                     const dateString = `${(DATE.getMonth() + 1).toString().padStart(2, '0')}/${DATE.getDate().toString().padStart(2, '0')}`;
                     const hours = DATE.getHours();
                     const minutes = DATE.getMinutes();
                     const timeString = hours < 12 ? `오전 ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}` : `오후 ${(hours - 12).toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-                    
-                    // 현재 메시지와 이전 메시지의 날짜가 다를 경우, 새로운 날짜를 추가
+
                     if (index === 0 || new Date(array[index - 1].sendDate).toDateString() !== DATE.toDateString()) {
                         return {
                             ...chat,
@@ -178,61 +175,93 @@ function ChatRoom() {
             }
         }
     }
+
     const fetchCoupons = async () => {
         try {
-          const response = await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-coupon-service/coupon/${id}`, 
-          {headers: {
-              Authorization: window.localStorage.getItem('bbs_access_token'),
-          },
-          
-      });
-      console.log(response.data);
-          setCoupons(response.data);
+            const response = await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-coupon-service/coupon/${id}`, 
+            {
+                headers: {
+                    Authorization: window.localStorage.getItem('bbs_access_token'),
+                },
+            });
+            console.log(response.data);
+            setCoupons(response.data);
         } catch (error) {
-          console.error('쿠폰을 불러오는데 실패했습니다', error);
+            console.error('쿠폰을 불러오는데 실패했습니다', error);
         }
-      };
+    };
+
     const handleOpenPaymentModal = () => {
         setShowPaymentPopup(true); 
     };
+
     const handleClosePaymentModal = () => {
         setShowPaymentPopup(false); 
         setSelectedCoupon(null);
     };
+
     const handleCompleteTrade = () => {
         navigate(`/bbsbuyer/${tradeBoardNo}/${nickname}`);
     };
-    const handleSendPayment = async () => {
+
+    const validatePayment = async (paymentRequestDto) => {
         try {
-            const paymentRequestDto={
-                payMoney: selectedCoupon? discountedPrice:price, // 가격 정보
-                discountPrice:discount, 
-                memberNo: memberId, // 회원 번호
-                couponNo: selectedCoupon?.couponNo, // 선택된 쿠폰 번호
-                couponStatus: selectedCoupon ? '쿠폰사용' : '쿠폰미사용', // 쿠폰 상태 설정
-            }
-            console.log(paymentRequestDto)
-            const resp = await api.post(`${process.env.REACT_APP_SERVER_URL}/plant-pay-service/payMoney/trade/?sellerNo=${sellerNo}`, paymentRequestDto, {
-                headers: {
-                    Authorization: window.localStorage.getItem('bbs_access_token'),
-                },
-                
+            const validationResp = await api.post(`${process.env.REACT_APP_SERVER_URL}/plant-pay-service/payMoney/validation`, paymentRequestDto, {
+                headers: { Authorization: window.localStorage.getItem('bbs_access_token') },
+            });
+            console.log(validationResp);
+            return validationResp.status === 200; // 검증 성공 여부 반환
+        } catch (error) {
+            console.error('Error sending message:', error);
+            const resp = error.response.data;
+              if (resp.errorCodeName === "011"){
+                  alert(resp.message);
+                  return false; // 검증 실패
+                }
+        }
+    };
+
+    const sendPayment = async (paymentRequestDto) => {
+        try {
+            const resp = await api.post(`${process.env.REACT_APP_SERVER_URL}/plant-coupon-service/coupon/payment`, paymentRequestDto, {
+                headers: { Authorization: window.localStorage.getItem('bbs_access_token') },
             });
             console.log(resp);
-            if(resp.status==200){
+
+            if (resp.status === 200) {
                 setShowPaymentPopup(false);
                 alert("성공적으로 송금되었습니다.");
+                setMessages(prevMessages => [...prevMessages, { content: '성공적으로 송금되었습니다.', mine: true }]);
+            } else {
+                alert('결제 처리 중 문제가 발생했습니다.');
             }
-            setMessages(prevMessages => [...prevMessages, { content: '성공적으로 송금되었습니다.', mine: true }]);
         } catch (error) {
             const resp = error.response.data;
-            console.log(resp);
             if (resp.errorCodeName === "021"){
-              alert(resp.message);
-            }
-            if (resp.errorCodeName === "012"){
                 alert(resp.message);
               }
+              if (resp.errorCodeName === "011"){
+                  alert(resp.message);
+                }
+                if(resp.errorCodeName==="026"){
+                  alert(resp.message);
+                }
+        }
+    };
+
+    const handleSendPayment = async () => {
+        const paymentRequestDto = {
+            payMoney: selectedCoupon ? discountedPrice : price,
+            discountPrice: discount, 
+            memberNo: memberId,
+            couponNo: selectedCoupon?.couponNo,
+            couponStatus: selectedCoupon ? '쿠폰사용' : '쿠폰미사용', 
+            sellerNo: sellerNo
+        };
+
+        const isValid = await validatePayment(paymentRequestDto);
+        if (isValid) {
+            await sendPayment(paymentRequestDto);
         }
     };
 
@@ -250,7 +279,6 @@ function ChatRoom() {
         };
 
         try {
-            // 메시지 전송
             stompClient.current.send(
                 '/publish/message',
                 { Authorization: window.localStorage.getItem('bbs_access_token') },
@@ -261,17 +289,11 @@ function ChatRoom() {
         }
         
         try {
-            // 채팅 저장 및 알림 호출
             await api.post(`${process.env.REACT_APP_SERVER_URL}/plant-chat-service/chatroom/notification`, messageData, {
                 headers: {
                     Authorization: window.localStorage.getItem('bbs_access_token'),
                 },
-                
-            }
-            
-            );
-            // fetchChattingHistory();
-
+            });
         } catch (error) {
             console.error('Error sending message:', error);
             const resp = error.response.data;
@@ -332,7 +354,7 @@ function ChatRoom() {
                         />
                     )}
                     <span className="clickable" onClick={() => setShowCouponsModal(true)} >
-                        사용 가능한 쿠폰: {coupons.length}개
+                        사용 가능한 쿠폰 보기
                     </span>
                     <p>송금할 금액</p>
                     <p>보유 페이 머니 : {payMoney}원</p>
@@ -353,8 +375,7 @@ function ChatRoom() {
                 </div>
                 )}
             </div>
-);
+    );
 }
 
 export default ChatRoom;
-

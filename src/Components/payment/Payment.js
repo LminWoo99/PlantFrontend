@@ -10,6 +10,9 @@ const Payment = () => {
 
   const memberNo=localStorage.getItem("id");
   useEffect(() => {
+    
+    
+    console.log(token);
     const nickname = localStorage.getItem("nickname");
     setEmail(localStorage.getItem("email"));
     // 이하 생략
@@ -30,13 +33,13 @@ const Payment = () => {
       console.log(rsp);
       try {
         const { data } = api.post(`${process.env.REACT_APP_SERVER_URL}/plant-pay-service/verifyIamport/` + rsp.imp_uid, {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${localStorage.getItem("bbs_access_token")}` }
       });
         if (rsp.paid_amount === data.response.amount) {
           alert('결제 성공');
           // 결제 성공 후 서버에 결제 정보 전송
           api.post(`${process.env.REACT_APP_SERVER_URL}/plant-pay-service/payMoney`, {
-            headers: { Authorization: `Bearer ${token}` }
+            headers: { Authorization: `Bearer ${localStorage.getItem("bbs_access_token")}` }
         },{
             paymentRequestDto: {
               payMoney: amount,

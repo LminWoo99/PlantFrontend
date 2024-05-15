@@ -30,9 +30,9 @@ const PayMentPage = () => {
   }, [payMoney]);
   useEffect(() => {
     const jquery = document.createElement("script");
-    jquery.src = "http://code.jquery.com/jquery-1.12.4.min.js";
+    jquery.src = "https://code.jquery.com/jquery-1.12.4.min.js";
     const iamport = document.createElement("script");
-    iamport.src = "http://cdn.iamport.kr/js/iamport.payment-1.1.7.js";
+    iamport.src = "https://cdn.iamport.kr/js/iamport.payment-1.1.7.js";
     document.head.appendChild(jquery);
     document.head.appendChild(iamport);
     return () => {
@@ -41,7 +41,7 @@ const PayMentPage = () => {
     };
   }, []);
 
-  const handleCharge = () => {
+  const handleCharge = async () => {
     const { IMP } = window;
     IMP.init('imp66118428');
 
@@ -56,8 +56,8 @@ const PayMentPage = () => {
       console.log(rsp);
       try {
         
-        const { data } = api.post(`${process.env.REACT_APP_SERVER_URL}/plant-pay-service/verifyIamport/` + rsp.imp_uid, {
-          headers: { Authorization: `Bearer ${token}` }
+        const { data } = await api.post(`${process.env.REACT_APP_SERVER_URL}/plant-pay-service/verifyIamport/` + rsp.imp_uid, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("bbs_access_token")}` }
       });
         if (rsp.paid_amount === data.response.amount) {
           alert('결제 성공');
@@ -67,8 +67,8 @@ const PayMentPage = () => {
             payMoney: data.response.amount,
               memberNo: memberNo
           }
-          api.post(`${process.env.REACT_APP_SERVER_URL}/plant-pay-service/payMoney/charge`,paymentRequestDto,{
-            headers: { Authorization: `Bearer ${token}` }
+          await api.post(`${process.env.REACT_APP_SERVER_URL}/plant-pay-service/payMoney/charge`,paymentRequestDto,{
+            headers: { Authorization: `Bearer ${localStorage.getItem("bbs_access_token")}` }
         } );
           window.location.reload();
         } else {
@@ -91,7 +91,7 @@ const PayMentPage = () => {
     };
     console.log(refundData);
     try {
-      api.patch(
+      await api.patch(
         `${process.env.REACT_APP_SERVER_URL}/plant-pay-service/payMoney/refund`,refundData, {
           headers: { Authorization: `Bearer ${token}` }
       }

@@ -44,7 +44,16 @@ function MyTradeInfo() {
     }
     return false;
   });
+  const formatDate = (dateString) => {
+    console.log(dateString);
 
+    const year = dateString[0]
+    const month = dateString[1]
+    const day = dateString[2]
+    const hours = dateString[3]
+    const minutes = dateString[4]
+    return `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분`;
+};
   return (
     <div className="my-trade-info">
       <h2>나의 판매 내역</h2>
@@ -64,7 +73,7 @@ function MyTradeInfo() {
               상태: {trade.status}
             </div>
             <div className="created-at">
-              작성일: {trade.createdAt}
+              작성일: {formatDate(trade.createdAt)}
             </div>
           </div>
         ))}
