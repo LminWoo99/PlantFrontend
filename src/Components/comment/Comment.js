@@ -5,6 +5,8 @@ import { AuthContext } from "../../context/AuthProvider";
 import { HttpHeadersContext } from "../../context/HttpHeadersProvider";
 import CommentWrite from "./CommentWrite";
 import "../../css/comment.css"
+import api from "../api"
+
 function Comment(props) {
 	const { auth, setAuth } = useContext(AuthContext);
 	const { headers, setHeaders } = useContext(HttpHeadersContext);
@@ -38,8 +40,7 @@ function Comment(props) {
 		memberId: comment.memberId
 	  };
   console.log(req);
-	  await axios
-		.put(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/comment/${comment.id}`, req, { headers: headers })
+  await api.put(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/comment/${comment.id}`, req, { headers: headers })
 		.then((resp) => {
 		  console.log("[Comment.js] updateComment() success :D");
 		  console.log(resp);
@@ -58,7 +59,7 @@ function Comment(props) {
 	};
   
 	const deleteComment = async () => {
-	  await axios
+		await api
 		.delete(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/comment/${comment.id}`, { headers: headers })
 		.then((resp) => {
 		  console.log("[BbsComment.js] deleteComment() success :D");

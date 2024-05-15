@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import myImage from './스크린샷 2023-09-04 오후 6.41.40.png';
 import { HttpHeadersContext } from "../../context/HttpHeadersProvider";
+import api from "../api"
+
 function PlantDetail() {
   const [plantDto, setPlantDto] = useState({});
   const { id } = useParams();
@@ -12,7 +14,7 @@ function PlantDetail() {
   useEffect(() => {
     async function fetchPlantDetail() {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/plantList/${id}`, { headers: headers });
+        const response = await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/plantList/${id}`, { headers: headers });
         setPlantDto(response.data);
       } catch (error) {
         console.error("[PlantDetail.js] fetchPlantDetail() error:", error);

@@ -9,7 +9,7 @@ import Comment from "../comment/Comment";
 import { HttpHeadersContext } from "../../context/HttpHeadersProvider";
 import "../../css/BbsDetail.css";
 import ImageGalleryComponent from "./ImageGalleryComponent";
-
+import api from "../api"
 function BbsDetail() {
     const { auth, setAuth } = useContext(AuthContext);
     const { headers, setHeaders } = useContext(HttpHeadersContext);
@@ -31,67 +31,59 @@ function BbsDetail() {
     const [showImage, setShowImage] = useState(false);
     const [chatButtonText, setChatButtonText] = useState("");
     const [status, setStatus] = useState("");
-
+    const [isOpen, setIsOpen]=useState(false);
     function formatDate(dateString) {
-        const date = new Date(dateString);
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, "0");
-        const day = String(date.getDate()).padStart(2, "0");
-        const hours = String(date.getHours()).padStart(2, "0");
-        const minutes = String(date.getMinutes()).padStart(2, "0");
+        if (!dateString || !Array.isArray(dateString) || dateString.length < 5) {
+            console.log("Invalid or incomplete date data", dateString);
+            return "Invalid date";  // You can return an empty string or any placeholder text
+        }
+    
+        const year = dateString[0];
+        const month = String(dateString[1]).padStart(2, "0");
+        const day = String(dateString[2]).padStart(2, "0");
+        const hours = String(dateString[3]).padStart(2, "0");
+        const minutes = String(dateString[4]).padStart(2, "0");
+    
         return `${year}/${month}/${day} ${hours}시 ${minutes}분`;
     }
 
-    const getImageUrls = async () => {
-        await axios
-            .get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/${id}/images`, { headers })
-            .then((resp) => {
-                console.log("[image.js] getImageUrls() success :D");
-                console.log(resp);
-                const imageUrls = resp.data.map((item) => item.url);
 
-                console.log(imageUrls);
-                setImageUrls(imageUrls);
-            })
-            .catch((err) => {
-                console.log("[BbsDetail.js] getImageUrls() error :<");
-                console.log(err);
-            });
-    };
 
     const getBbsDetail = async () => {
-        await axios
-            .get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/list/${id}`, { headers })
+        await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/list/${id}`, { headers })
             .then((resp) => {
                 console.log("[BbsDetail.js] getBbsDetail() success :D");
                 console.log(resp.data);
+                
 
                 setTradeBoardDto(resp.data);
                 setTradeId(resp.data.id);
-                setView(resp.data.view); // 조회수 값 업데이트
+                setView(resp.data.view); 
                 setMemberId(resp.data.memberId);
                 setStatus(resp.data.status);
                 setPrice(resp.data.price);
-                console.log(tradeId);
-                console.log(memberId);
-                console.log(auth);
+                
+                setImageUrls(resp.data.imageUrls);
+
+                console.log(tradeBoardDto.createdAt);
                 if (auth == resp.data.createBy) {
-                    console.log("ssss");
                     setChatButtonText("대화중인 채팅방 가기");
                 } 
-                else { // 채팅 방이 존재하고 권한이 있는 경우
+                else { 
                     setChatButtonText("채팅하기");
                 }
             })
             .catch((err) => {
-                console.log("[BbsDetail.js] getBbsDetail() error :<");
-                console.log(tradeBoardDto.id);
-                console.log(err);
+                // const resp = err.response.data;
+                // console.log(resp);
+                // if (resp.errorCodeName === "016"){
+                // alert(resp.message);
+                // }
             });
     };
     const getBbsView = async () => {
-        await axios
-            .get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/read/${id}`, { headers })
+        await api
+            .get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/view/${id}`, { headers })
             .then((resp) => {
                 console.log("[BbsDetail.js] getBbsView() success :D");
                 setView(resp.data); // view 값 업데이트
@@ -99,11 +91,12 @@ function BbsDetail() {
             .catch((err) => {
                 console.log("[BbsDetail.js] getBbsView() error :<");
                 console.log(err);
+                
             });
     };
 
     const deleteBbs = async () => {
-        await axios
+        await api
             .delete(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/list/${id}`, { headers })
             .then((resp) => {
                 console.log("[BbsDetail.js] deleteBbs() success :D");
@@ -131,7 +124,7 @@ function BbsDetail() {
             };
 
             if (!goodStatus) {
-                const response = await axios.post(
+                const response = await api.post(
                     `${process.env.REACT_APP_SERVER_URL}/plant-service/api/goods/${memberId}`,
                     goodsRequestDto,
                     { headers }
@@ -143,7 +136,7 @@ function BbsDetail() {
                 window.location.reload();
                 console.log(response.data);
             } else {
-                const response = await axios.post(
+                const response = await api.post(
                     `${process.env.REACT_APP_SERVER_URL}/plant-service/api/goods/${memberId}`,
                     goodsRequestDto,
                     { headers }
@@ -154,46 +147,37 @@ function BbsDetail() {
                 window.location.reload();
             }
         } catch (error) {
-            console.error("Error adding to wishlist:", error);
+            const resp = error.response;
+            console.log(resp);
+            // if (resp.errorCodeName === "016"){
+            // alert(resp.message);
+            // }
         }
     };
-    const getReplyList = async () => {
-        await axios
-            .get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/comment/reply`, {
-                params: { tradeBoardId: id },
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            })
-            .then((resp) => {
-                console.log("[BbsDetail.js] getReplyList() success :D");
-                console.log(resp.data);
 
-                setReplyList(resp.data); // 대댓글 목록 설정
-            })
-            .catch((err) => {
-                console.log("[BbsDetail.js] getReplyList() error :<");
-                console.log(err);
-            });
-    };
     const getGoodsStatus = async () => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/goods/status`, {
+            const response = await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/goods/status`, {
                 params: { memberId: localStorage.getItem("id"), tradeBoardId: id },
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
 
-            if (response.data !== null) {
+            if (response.data == true) {
                 console.log(response.data);
                 setGoodStatus(true);
             } else {
-                // response.data가 false일 경우, 찜 상태를 false로 설정
+
                 setGoodStatus(false);
             }
         } catch (error) {
-            console.error("Error getting trade status:", error);
+            const resp = error.response.data;
+            console.log(resp);
+            if (resp.errorCodeName === "007"){
+            alert(resp.message);
+
+            }
         }
     };
 
@@ -201,9 +185,7 @@ function BbsDetail() {
     useEffect(() => {
         getBbsDetail();
         getGoodsStatus();
-        getBbsView();
-        getReplyList();
-        getImageUrls();
+        // getReplyList();
  
 
     }, []);
@@ -231,7 +213,7 @@ function BbsDetail() {
 const handleChatClick = async () => {
     try {
         if(localStorage.getItem("id")==tradeBoardDto.memberId){
-            const resp = await axios.get(`${process.env.REACT_APP_SERVER_URL}/plant-chat-service/chatroom/exist/seller` ,{
+            const resp = await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-chat-service/chatroom/exist/seller` ,{
                 params: { 
                     tradeBoardNo: Number(tradeId),
                     memberNo: Number(localStorage.getItem("id"))
@@ -258,7 +240,7 @@ const handleChatClick = async () => {
         };
         const accessToken = `Bearer ${window.localStorage.getItem('bbs_access_token')}`;
         // 채팅 방 생성 요청
-        const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/plant-chat-service/chatroom`, chatRequestDto, {
+        const response = await api.post(`${process.env.REACT_APP_SERVER_URL}/plant-chat-service/chatroom`, chatRequestDto, {
             params: { memberNo: tradeBoardDto.memberId },
             headers: {
                 Authorization: accessToken,
@@ -267,15 +249,20 @@ const handleChatClick = async () => {
         console.log(response);
         const chatNo = response.data.data.chatNo;
         console.log(chatNo);
-        navigate(`/chatroom/${chatNo}/${chatRequestDto.tradeBoardNo}/${tradeBoardDto.nickname}`);
+        navigate(`/chatroom/${chatNo}/${chatRequestDto.tradeBoardNo}/${tradeBoardDto.createBy}`);
 
         
         
         }
     } catch (error) {
-        console.error("Error creating chat room:", error);
+        const resp = error.response;
+        console.log(resp);
+        // if (resp.errorCodeName === "016"){
+        //   alert(resp.message);
+        // }
     }
 };
+
 
 
     return (
@@ -388,23 +375,10 @@ const handleChatClick = async () => {
             <br />
             <br />
 
-            {/* 댓글 작성 컴포넌트 */}
-            {auth ? ( // 로그인한 사용자만 댓글 작성 가능
-                <CommentWrite data={data} />
-            ) : null}
-
-            {/* 댓글 리스트 컴포넌트 */}
-            <CommentList id={id} />
-            <div className="my-5">
-                {replyList.map((reply, index) => (
-                    <div key={index}>
-                        {/* 대댓글 컴포넌트 사용 */}
-                        <Comment obj={reply} tradeBoardId={tradeBoardDto.createBy} />
-                    </div>
-                ))}
-            </div>
+    
         </div>
     );
+
 }
 
 export default BbsDetail;

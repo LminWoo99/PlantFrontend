@@ -1,0 +1,47 @@
+/* MyAccountPage.css */
+.account-container {
+  background-color: #b2c5c3; /* 변경된 배경색 */
+  min-height: 100vh; /* 전체 뷰포트 높이 */
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 10px;
+  padding: 5vh 10vh; /* 상단과 하단에 약간의 공간을 추가 */
+  
+}
+
+.account-header {
+  color: #3bb19b; /* 텍스트 색상 */
+  font-size: 2em; /* 텍스트 크기 */
+  margin-bottom: 5vh; /* "나의 계정"과 박스 사이의 공간을 늘림 */
+}
+
+.account-list {
+  font-size: 20px;
+  width: 90%; /* 전체 너비의 90% */
+  max-width: 500px; /* 최대 너비 */
+  background: white; /* 백그라운드 색상 */
+  border-radius: 10px; /* 모서리 둥글게 처리 */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* 그림자 효과 */
+  list-style: none;
+  padding: 2em; /* 안쪽 여백 */
+  margin: 2vh 0; /* 위 아래 여백 */
+}
+
+.account-item:not(:last-child) {
+  border-bottom: 1px solid #eaeaea; /* 리스트 아이템 사이에 선 추가 */
+  margin-bottom: 1em; /* 아이템 간격 */
+}
+
+.account-link {
+  display: flex;
+  align-items: center;
+  color: black; /* 텍스트 색상 */
+  text-decoration: none; /* 링크 밑줄 제거 */
+  padding: 0.5em 0; /* 링크 내부 여백 */
+}
+
+.account-link .icon {
+  margin-right: 10px; /* 아이콘과 텍스트 사이의 공간 */
+  /* 아이콘 스타일을 여기에 추가 */
+}

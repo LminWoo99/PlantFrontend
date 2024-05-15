@@ -1,0 +1,50 @@
+.home-container {
+    position: relative;
+    height: 100vh;
+  }
+  
+  .text-container {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-size: 59px;
+    color: #4A4A4A;
+    line-height: 2.4;
+  }
+  
+  .animated-text {
+    animation: scale-animation 2s infinite;
+    margin-top: 80px;
+  }
+  
+  @keyframes scale-animation {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  .banner-container {
+    position: fixed;
+    bottom: 51px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    background-color: #ffffff;
+    padding: 1rem;
+    border-radius: 25px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.05);
+  }
+  
+  .coupon-text {
+    font-size: 30px;
+    font-weight: bold;
+    color: #FF8A00;
+    text-align: center;
+    text-decoration : underline;
+  }

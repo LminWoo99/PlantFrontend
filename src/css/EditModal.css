@@ -1,0 +1,82 @@
+.edit-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .edit-modal {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    width: 80%; 
+    height: 80%;
+    max-width: 1200px; /* 최대 너비를 설정하여 너무 큰 화면에서 모달이 과도하게 넓어지는 것을 방지 */
+    max-height: 800px; /* 최대 높이 설정 */
+    overflow-y: auto; /* 내용이 많을 경우 스크롤 */
+  }
+  
+  .edit-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .edit-modal-close-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .edit-modal-body {
+    display: flex;
+    justify-content: space-between;
+    width: 100%; /* 변경됨: 부모 컨테이너의 전체 너비 사용 */
+    height: calc(100% - 40px); /* 변경됨: 헤더와 푸터의 높이를 제외한 높이 사용 */
+  }
+  
+  .edit-modal-image-container {
+    flex-basis: 50%; /* 변경됨: 화면의 절반 사용 */
+    padding: 10px;
+  }
+  
+  .edit-modal-image-container img {
+    width: 100%;
+    height: 60%; 
+    border-radius: 10px;
+  }
+  
+  .edit-modal-form {
+    flex-basis: 50%; /* 변경됨: 화면의 절반 사용 */
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .edit-modal-textarea,
+  .edit-modal-input {
+    width: 100%; /* 변경됨: 입력 필드 너비 조정 */
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .edit-modal-save-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }

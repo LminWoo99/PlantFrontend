@@ -9,6 +9,16 @@
     display: flex;
     flex-direction: column;
 }
+/* Add this class in your CSS file */
+.button-spacing {
+    background-color: blue;
+    margin-left: 10px; /* Adjust the value as needed */
+}
+.clickable {
+    text-decoration: underline;
+    cursor: pointer;
+    color: blue;
+  }
 
 /* Chat messages container */
 .chat-messages {
@@ -171,3 +181,105 @@
   .chat-complete-trade button:hover {
     background-color: #039f77; /* 호버 시 버튼 배경색 변경 */
   }
+  .payment-modal {
+    display: flex;
+    position: fixed;
+    z-index: 10001;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .payment-modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    animation-name: animatetop;
+    animation-duration: 0.4s;
+    position: relative; /* 쿠폰 모달의 위치 기준 */
+  }
+  
+
+.payment-modal-content p {
+    color: black;
+    font-size: 16px;
+}
+
+.payment-modal-content input {
+    width: 95%;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.payment-modal-content button {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    padding: 14px 20px;
+    margin: 10px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+.payment-modal-content button:hover {
+    opacity: 0.8;
+}
+
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+@keyframes animatetop {
+    from {top: -300px; opacity: 0} 
+    to {top: 0; opacity: 1}
+}
+/* ... 기존 CSS ... */
+.modal-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1001;
+  }
+  
+  .modal {
+    color: #000;
+    background: green;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1002; /* 가장 높은 z-index 값 */
+  }
+  .modal button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+

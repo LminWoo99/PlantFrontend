@@ -8,6 +8,7 @@ import { HttpHeadersContext } from "../../context/HttpHeadersProvider";
 import myImage from './kakao_login_small.png';
 import { Link } from "react-router-dom";
 import '../../css/style.css';
+import api from "../api"
 
 const CLIENT_ID = process.env.REACT_APP_REST_API_KEY;
 const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL;
@@ -40,7 +41,7 @@ function Login() {
 			password: password
 		}
 
-		await axios.post(`${SERVER_URL}/plant-service/api/login`, req)
+		await api.post(`${SERVER_URL}/plant-service/api/login`, req)
 		.then((resp) => {
 			console.log("[Login.js] login() success :D");
 			console.log(resp.data);
@@ -60,15 +61,16 @@ function Login() {
 				
 				
 
-				navigate("/bbslist");
+				navigate("/");
 				window.location.reload();
 				
 
 		}).catch((err) => {
 			console.log("[Login.js] login() error :<");
 			console.log(err);
-
-			alert("⚠️ " + err.response.data);
+			// const errorCode = err.response.data.errorCode;
+            // const message = err.response.data.message;
+			alert(`ID/PW가 일치하지 않습니다.`);
 		});
 	}
 	// SSE 연결을 초기화하는 함수

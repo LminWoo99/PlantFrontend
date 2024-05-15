@@ -1,63 +1,21 @@
-.list_notification-link {
-    /* background-color: #007bff; */
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    text-decoration: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.list_notification-link:hover {
-    background-color: #0056b3;
-}
-
-
-.list_notification-content {
-    margin-bottom: 10px;
-}
-
-.list_notification-type {
-    font-weight: bold;
-    color: black;
-}
-
-.list_notification-message {
-    margin-left: 10px;
-}
-
-.list_notification-meta {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.85rem;
-}
-
-.list_notification-sender {
-    font-weight: bold;
-    margin-right: 10px; /* Adds right margin to the sender's name */
-
-}
-
-/* list_NotificationList.css modifications */
 .list_notification-list {
     padding: 20px;
     max-width: 600px;
     margin: auto;
-    background: #eee; /* This will set the background color for the entire list */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: adds shadow for depth */
+    background: #eee; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .list_notification-item {
-    border-bottom: 2px solid #333; /* Make the border under each item more pronounced */
-    padding: 15px 0;
-    position: relative; /* For the positioning of the unread indicator */
+    border-bottom: 2px solid #333;
+    padding: 15px 20px; /* Increased padding to give more space on the left and right */
+    position: relative;
 }
 
 .list_notification-item.read {
     background-color: #f0f0f0c0;
 }
 
-/* Add this for the unread list_notifications indicator */
 .list_notification-unread-indicator {
     height: 10px;
     width: 10px;
@@ -68,23 +26,92 @@
     top: 10px;
 }
 
-/* Your existing CSS continues */
+.list_notification-content {
+    margin-bottom: 10px;
+}
+
+.list_notification-type {
+    font-weight: bold;
+}
+
+/* Specific styles for different notification types */
+.sns-comment {
+    border-left: 5px solid #42a5f5;
+    padding-left: 15px; /* Added padding to give space between the border and content */
+}
+
+.sns-comment .list_notification-type {
+    color: #42a5f5;
+}
+
+.tradeboard-goods {
+    border-left: 5px solid #ffa726;
+    padding-left: 15px; /* Added padding to give space between the border and content */
+}
+
+.tradeboard-goods .list_notification-type {
+    color: #ffa726;
+}
+
+.sns-heart {
+    border-left: 5px solid #ef5350;
+    padding-left: 15px; /* Added padding to give space between the border and content */
+}
+
+.sns-heart .list_notification-type {
+    color: #ef5350;
+}
+
+.chat {
+    border-left: 5px solid #66bb6a;
+    padding-left: 15px; /* Added padding to give space between the border and content */
+}
+
+.chat .list_notification-type {
+    color: #66bb6a;
+}
+
+.list_notification-message {
+    margin-left: 10px;
+}
+
+.list_notification-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Vertically center the items */
+    font-size: 0.85rem;
+}
+
+.list_notification-sender {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.list_notification-actions {
+    display: flex;
+    align-items: center;
+}
+
 .list_notification-link {
     color: #007bff;
     text-decoration: none;
-    padding: 5px 10px; /* Adjust padding as needed */
-    margin-left: 5px;
+    padding: 5px 10px;
     border-radius: 5px;
     cursor: pointer;
-    background-color: #007bff; /* Adds background color to the link */
-    color: white; /* Change the text color to white for better contrast */
+    background-color: #007bff;
+    color: white;
+    margin-left: 10px; /* Add margin to separate it from the delete button */
 }
+
+.list_notification-link:hover {
+    background-color: #0056b3;
+}
+
 .list_notification-delete {
-    background-color: #f44336; /* Red color for delete button */
+    background-color: #f44336;
     color: white;
     border: none;
     padding: 5px 10px;
-    margin-left: 10px;
     border-radius: 4px;
     cursor: pointer;
-  }
+}

@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
 import { HttpHeadersContext } from "../context/HttpHeadersProvider";
+import api from "../api"
 
 function Reply(props) {
 
@@ -21,8 +22,7 @@ console.log(reply);
             memberId: reply.memberId
         };
 
-        await axios
-            .put(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/comment/${reply.id}`, req, { headers: headers })
+        await api.put(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/comment/${reply.id}`, req, { headers: headers })
             .then((resp) => {
                 console.log("[Reply.js] updateReply() success :D");
                 console.log(reply.id);
@@ -36,8 +36,7 @@ console.log(reply);
     };
 
     const deleteReply = async () => {
-        await axios
-            .delete(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/comment/${reply.id}`)
+        await api.delete(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/comment/${reply.id}`)
             .then((resp) => {
                 console.log("[Reply.js] deleteReply() success :D");
                 alert("대댓글을 성공적으로 삭제했습니다 :D");

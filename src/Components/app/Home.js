@@ -1,52 +1,49 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import "../../css/Home.css";
 
 function Home() {
-  const [text, setText] = useState(""); // 나타낼 텍스트
-  const textArray = [
-    "당신의 식물을\n공유하고 식물의 정보를 얻어가세요",
-    "🍀식구하자를 통해서🍀",
-  ]; // 나타낼 텍스트 배열
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [inputValue, setInputValue] = useState("");
+  const textToType = ""; // The text you want to type
+  let charIndex = 0;
 
   useEffect(() => {
-    let currentIndex = 0;
+    const intervalId = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % textArray.length);
+    }, 3000);
 
-    const interval = setInterval(() => {
-      setText(textArray[currentIndex]);
-      currentIndex = (currentIndex + 1) % textArray.length;
-    }, 1000);
+    return () => clearInterval(intervalId);
+  }, []);
 
-    return () => {
-      clearInterval(interval);
-    };
-  }, [textArray]);
+  useEffect(() => {
+    const typingInterval = setInterval(() => {
+      if (charIndex < textToType.length) {
+        setInputValue((prev) => prev + textToType[charIndex]);
+        charIndex++;
+      } else {
+        clearInterval(typingInterval); // Stop typing once the full text has been typed out
+      }
+    }, 150); // Adjust speed as needed
 
-  const parentStyle = {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "50vh", // 화면 높이 50%
-  };
+    return () => clearInterval(typingInterval);
+  }, []);
 
-  const textStyle = {
-    fontSize: "80px", // 글씨 크기를 2배로 키움
-    color: "rgba(128, 128, 128, 1.0)"
-  };
+  const textArray = [
+
+    "당신의 식물을\n공유하고 식물의 정보를 얻어가세요",
+    "🍀식구하자를 통해서🍀",
+  ];
 
   return (
-    <div style={parentStyle}>
-      <div className="page-contents">
-        <div className="search-box">
-          <div className="aos-init aos-animate">
-            <p
-              data-aos="fade-up"
-              data-aos-duration="800"
-              className="aos-init aos-animate"
-              style={textStyle}
-            >
-              {text}
-            </p>
-          </div>
-        </div>
+    <div className="home-container">
+      <div className="text-container">
+        <div className="animated-text">{textArray[currentIndex]}</div>
+      </div>
+      <div className="banner-container">
+        <Link to="/coupon">
+          <p className="coupon-text">🎉 매일 13시, 식물 거래 할인 쿠폰 100명까지! 🎉</p>
+        </Link>
       </div>
     </div>
   );

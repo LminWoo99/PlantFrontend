@@ -3,6 +3,7 @@ import { useEffect , useContext} from "react";
 import axios from "axios";
 import { AuthContext } from "../../context/AuthProvider";
 import { HttpHeadersContext } from "../../context/HttpHeadersProvider";
+import api from "../api"
 
 
 
@@ -16,7 +17,7 @@ const { headers, setHeaders } = useContext(HttpHeadersContext);
     // 인가코드 백으로 보내는 코드
     useEffect(() => {
         const kakaoLogin = async () => {
-            await axios({
+            await api({
                 method: "GET",
                 url: `${process.env.REACT_APP_SERVER_URL}/plant-service/api/oauth2/login/kakao/?code=${code}`,
                 headers: {
@@ -34,7 +35,7 @@ const { headers, setHeaders } = useContext(HttpHeadersContext);
                 localStorage.setItem("email", res.data.email);
 
                 
-                navigate("/bbslist");
+                navigate("/");
               
 
                 window.location.reload()

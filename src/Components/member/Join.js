@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import api from "../api"
 
 function Join() {
   const [username, setUsername] = useState("");
@@ -9,12 +10,13 @@ function Join() {
   const [checkpassword, setCheckpassword] = useState("");
 
   const [email, setEmail] = useState("");
-
+  
   const [passwordMismatch, setPasswordMismatch] = useState(false);
   const [requiredFieldsMissing, setRequiredFieldsMissing] = useState(false);
 
   const [usernameAvailable, setUsernameAvailable] = useState(false);
   const [nicknameAvailable, setNicknameAvailable] = useState(false);
+  const [emailAvailable, setEmailAvailable] = useState(false);
 
   const [validEmail, setValidEmail] = useState(true);
 
@@ -61,31 +63,30 @@ function Join() {
 
   /* 아이디 중복 체크 */
   const checkUsernameDuplicate = async () => {
-    await axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/duplicate`, { params: { username: username } })
+    await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/user/username-chk`, { params: { username: username } })
       .then((resp) => {
         console.log("[Join.js] checkUsernameDuplicate() success :D");
         console.log(resp.data);
 
         if (resp.status === 200) {
           setUsernameAvailable(true);
+          
         }
       })
       .catch((err) => {
         console.log("[Join.js] checkUsernameDuplicate() error :<");
         console.log(err);
 
-        const resp = err.response;
-        if (resp.status === 400) {
-          alert("이미 사용중인 아이디입니다");
+        const resp = err.response.data;
+        if (resp.errorCodeName=="018") {
+          alert(resp.message);
         }
       });
   };
 
   /* 닉네임 중복 체크 */
   const checkNicknameDuplicate = async () => {
-    await axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/duplicate/nickname`, { params: { nickname: nickname } })
+    await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/user/nickname-chk`, { params: { nickname: nickname } })
       .then((resp) => {
         console.log("[Join.js] checkNicknameDuplicate() success :D");
         console.log(resp.data);
@@ -96,15 +97,39 @@ function Join() {
       })
       .catch((err) => {
         console.log("[Join.js] checkNicknameDuplicate() error :<");
-        console.log(err);
+        
 
-        const resp = err.response;
-        if (resp.status === 400) {
-          alert("이미 사용중인 닉네임입니다");
+        const resp = err.response.data;
+        console.log(resp);
+        if (resp.errorCodeName === "005"){
+          alert(resp.message);
         }
       });
   };
+   /* 이메일 중복 체크 */
+   const checkEmailDuplicate = async () => {
+    await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/user/email-chk`, { params: { email: email } })
+      .then((resp) => {
+        console.log("[Join.js] checkEmailDuplicate() success :D");
+        console.log(resp.data);
 
+        if (resp.status === 200) {
+          alert("본인인증을 진행해주세요!")
+          setEmailAvailable(true);
+        }
+      })
+      .catch((err) => {
+        console.log("[Join.js] checkNicknameDuplicate() error :<");
+        
+
+        const resp = err.response.data;
+        console.log(resp);
+        if (resp.errorCodeName === "019"){
+          alert(resp.message);
+          setEmailAvailable(false); 
+        }
+      });
+  };
   /* 회원가입 */
   const join = async () => {
     if (!username || !nickname || !password || !checkpassword || !email || !validEmail) {
@@ -146,7 +171,7 @@ function Join() {
       email: email,
     };
 
-    await axios
+    await api
       .post(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/user/save`, req)
       .then((resp) => {
         console.log("[Join.js] join() success :D");
@@ -166,12 +191,15 @@ function Join() {
       });
   };
   const handleEmailVerificationClick = () => {
-    setShowEmailVerification(true);
-    axios
-      .post(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/mailConfirm`, { email: email } )
+    if (!emailAvailable) {
+      alert("이메일 중복 확인을 해주세요.");
+      return;
+    }
+    api.post(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/mailConfirm`, { email: email } )
       .then((resp) => {
         alert("해당 이메일로 인증번호 발송이 완료되었습니다. 확인부탁드립니다.");
         setCode(resp.data);
+        setShowEmailVerification(true);
       })
       .catch((err) => {
         console.error(err);
@@ -249,9 +277,13 @@ function Join() {
               <button onClick={handleEmailConfirmationCheck}>인증 확인</button>
             </div>
           )}
-          <button onClick={handleEmailVerificationClick}>
-            이메일 본인인증 하기
+          <button onClick={checkEmailDuplicate}>
+            이메일 중복 확인
           </button>
+          {emailAvailable && !showEmailVerification && (
+            <button onClick={handleEmailVerificationClick}>
+              이메일 본인인증 하기
+            </button> )}
             </td>
           </tr>
         </tbody>

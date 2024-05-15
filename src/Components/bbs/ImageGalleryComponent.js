@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import "react-image-gallery/styles/css/image-gallery.css";
 import ImageGallery from "react-image-gallery";
 import "../../css/ImageGalleryComponent.css";
+import api from "../api"
 
 function ImageGalleryComponent({ imageUrls }) {
     const [images, setImages] = useState([]);
@@ -22,12 +23,12 @@ function ImageGalleryComponent({ imageUrls }) {
             <ImageGallery
                 items={images}
                 showPlayButton={false}
-                showFullscreenButton={true}
+                showFullscreenButton={false}
                 showBullets={true}
                 slideDuration={150}
                 lazyLoad={true}
-                showNav={false}
-                showThumbnails={true}
+                showNav={true}
+                showThumbnails={false}
                 additionalClass="image-gallery-custom"
             />
         </div>

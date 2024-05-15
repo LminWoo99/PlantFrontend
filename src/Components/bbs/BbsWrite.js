@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
 import { HttpHeadersContext } from "../../context/HttpHeadersProvider";
+import api from "../api"
 
 function BbsWrite() {
     const { auth } = useContext(AuthContext);
@@ -12,7 +13,8 @@ function BbsWrite() {
     const navigate = useNavigate();
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
-	const [price, setPrice] = useState();
+    const [price, setPrice] = useState("");
+    const username=localStorage.getItem("username");
 
     const [selectedFiles, setSelectedFiles] = useState([]);
 
@@ -27,11 +29,13 @@ function BbsWrite() {
     const changeContent = (event) => {
         setContent(event.target.value);
     };
-	const changePrice = (event) => { 
-        const inputPrice = event.target.value.replace(/[^0-9]/g, ""); 
-        const formattedPrice = inputPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ","); 
+
+    const changePrice = (event) => {
+        const inputPrice = event.target.value.replace(/[^0-9]/g, "");
+        const formattedPrice = inputPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         setPrice(formattedPrice);
     };
+
     const createBbs = async () => {
         if (!auth) {
             alert("로그인한 사용자만 글을 작성할 수 있습니다 !");
@@ -44,45 +48,32 @@ function BbsWrite() {
             return;
         }
 
-        const tradeBoardDto = {
-            id : id,
+        const formData = new FormData();
+        formData.append("tradeBoardDto", new Blob([JSON.stringify({
+            id: id,
             title: title,
             content: content,
-			price: parseInt(price.replace(/,/g, ''))
-        };
+            price: parseInt(price.replace(/,/g, '')),
+            username: username
+        })], {
+            type: "application/json"
+        }));
+
+        selectedFiles.forEach(file => formData.append("file", file));
 
         try {
-            const response = await axios.post(
-                `${process.env.REACT_APP_SERVER_URL}/plant-service/api/write`,
-                tradeBoardDto,
-                { headers: headers } 
-            );
-
-            const tradeBoardId = response.data.id;
-            uploadImages(tradeBoardId);
-        } catch (error) {
-            console.log("[BbsWrite.js] createBbs() error :", error);
-        }
-    };
-
-    async function uploadImages(tradeBoardId) {
-        const formData = new FormData();
-        for (let i = 0; i < selectedFiles.length; i++) {
-            formData.append("file", selectedFiles[i]);
-        }
-
-        try {
-            await axios.post(
-                `${process.env.REACT_APP_SERVER_URL}/plant-service/api/${tradeBoardId}/images`,
-                formData
+            const response = await api.post(
+                `${process.env.REACT_APP_SERVER_URL}/plant-service/api/trade-board`,
+                formData,
+                { headers: {...headers, 'Content-Type': 'multipart/form-data' } }
             );
             alert("새로운 게시글을 성공적으로 등록했습니다 :D");
-            navigate(`/bbsdetail/${tradeBoardId}`);
+            navigate(`/bbsdetail/${response.data}`);
         } catch (error) {
-            console.log("이미지 업로드 에러:", error);
-            alert("이미지 업로드 중 에러가 발생했습니다.");
+            console.log("[BbsWrite.js] createBbs() error :", error);
+            alert("Error creating post. Please try again.");
         }
-    }
+    };
 
     return (
         <div>
@@ -96,7 +87,7 @@ function BbsWrite() {
                                 className="form-control"
                                 value={title}
                                 onChange={changeTitle}
-								placeholder="제목"
+                                placeholder="제목"
                                 size="50px"
                             />
                         </td>
@@ -108,12 +99,12 @@ function BbsWrite() {
                                 className="form-control"
                                 value={content}
                                 onChange={changeContent}
-								placeholder="식물, 식물용품에 대한 자세한 설명을 입력해주세요"
+                                placeholder="식물, 식물용품에 대한 자세한 설명을 입력해주세요"
                                 rows="10"
                             ></textarea>
                         </td>
                     </tr>
-					<tr>
+                    <tr>
                         <th className="table-primary">가격</th>
                         <td>
                             <input
@@ -123,7 +114,6 @@ function BbsWrite() {
                                 onChange={changePrice}
                                 placeholder="가격을 입력하세요 (예: 25,000)"
                             />
-                            
                         </td>
                     </tr>
                 </tbody>

@@ -1,3 +1,37 @@
 .all{
     background-color: #04B486;
+    
 }
+/* 기본 스타일 */
+.navbar-nav {
+  
+    flex-direction: row;
+    align-items: center; /* 세로 정렬을 중앙으로 설정 */
+  }
+  
+  .nav-link {
+    color: #2F4F4F;
+    margin-right: 20px; /* 링크 간격 설정 */
+  }
+  
+  /* 모바일 기기를 위한 스타일 */
+  @media (max-width: 768px) {
+    .navbar-nav {
+      flex-direction: column; /* 모바일에서는 항목들을 세로로 배열 */
+      align-items: flex-start; /* 세로 정렬을 시작점으로 설정 */
+    }
+  
+    .nav-link {
+      margin-right: 0; /* 모바일에서는 오른쪽 마진 제거 */
+      margin-bottom: 10px; /* 아래쪽 마진 추가 */
+    }
+  }
+  .navbar-nav.flex-row {
+    display: flex;
+    flex-direction: row;
+  }
+  /* 알림 아이콘 스타일 */
+  .fa-bell {
+    color: #2F4F4F;
+  }
+  
