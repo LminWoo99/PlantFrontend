@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "../../css/BuyInfo.css"; 
+import api from "../api"
 
 function BuyInfo() {
   const [buyInfo, setBuyInfo] = useState([]);
@@ -18,7 +19,7 @@ function BuyInfo() {
 
   const fetchBuyInfo = async (id) => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/buyInfo/${id}`, {
+      const response =await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/buyInfo/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

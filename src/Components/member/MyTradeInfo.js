@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "../../css/MyTradeInfo.css"
+import api from "../api"
 
 function MyTradeInfo() {
   const [tradeList, setTradeList] = useState([]);
@@ -19,7 +20,7 @@ function MyTradeInfo() {
 
   const fetchTradeList = async (id) => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/tradeInfo/${id}`,{headers: {
+      const response = await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/tradeInfo/${id}`,{headers: {
         Authorization: `Bearer ${token}`,
       },
     });

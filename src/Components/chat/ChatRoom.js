@@ -7,6 +7,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
 import axios from "axios";
 import CouponModal from '../coupon/CouponModal';
+import api from "../api"
+
 function ChatRoom() {
     const { id, tradeBoardNo, nickname } = useParams();
     const { auth, setAuth } = useContext(AuthContext);
@@ -33,8 +35,7 @@ function ChatRoom() {
 
     useEffect(() => {
         console.log(memberId);
-        axios
-        .get(`${process.env.REACT_APP_SERVER_URL}/plant-pay-service/payMoney/${memberId}`, {
+        api.get(`${process.env.REACT_APP_SERVER_URL}/plant-pay-service/payMoney/${memberId}`, {
             headers: {
                 Authorization: window.localStorage.getItem('bbs_access_token'),
             },
@@ -54,8 +55,7 @@ function ChatRoom() {
             initInfo();
         }, [id]);
     useEffect(() => {
-        // STOMP 클라이언트 초기화
-        const socket = new SockJS('http://localhost:8000/plant-chat-service/chat', null);
+        const socket = new SockJS(`http://localhost:8000/plant-chat-service/chat`, null);
         stompClient.current = Stomp.over(socket);
         stompClient.current.connect({
             Authorization: window.localStorage.getItem('bbs_access_token'),
@@ -63,35 +63,36 @@ function ChatRoom() {
             keepalive: true
         }, () => {
             console.log('Connected to WebSocket');
-
+    
             // 연결 성공 시 메시지 구독
             stompClient.current.subscribe(`/subscribe/public/${id}`, (message) => {
-                // handleMessage(JSON.parse(message.body));
+                console.log(message);
                 fetchChattingHistory()
+                
             },{
                 Authorization: window.localStorage.getItem('bbs_access_token'),
             });
+            if (window.localStorage.getItem('bbs_access_token')) {
+                fetchChattingHistory();
+                
+            }
         });
-        if (window.localStorage.getItem('bbs_access_token')) {
-            fetchChattingHistory();
-            
-        }
-        
-        
+    
         return () => {
             if (stompClient.current) {
-            stompClient.current.disconnect();
-            disconnectChat();
+                stompClient.current.disconnect(() => {
+                    console.log("Disconnected WebSocket");
+                    disconnectChat();
+                });
             }
-          };
-        
-    }, [messages]);
+        };
+    }, [id]);
     
     useEffect(() =>{
         messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     },[messages]);
     async function initInfo(){
-        const resp= await axios.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/${tradeBoardNo}`, {
+        const resp= await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/${tradeBoardNo}`, {
             headers: {
                 Authorization: window.localStorage.getItem('bbs_access_token'),
             },
@@ -104,8 +105,8 @@ function ChatRoom() {
             setIsMine(true);
         }
     }
-    function disconnectChat() {
-        axios.post(`${process.env.REACT_APP_SERVER_URL}/plant-chat-service/chatroom/${id}?username=${mineNickname}`,
+    async function disconnectChat() {
+        await api.post(`${process.env.REACT_APP_SERVER_URL}/plant-chat-service/chatroom/${id}?username=${mineNickname}`,
         {
             headers: {
                 Authorization: window.localStorage.getItem('bbs_access_token'),
@@ -132,7 +133,7 @@ function ChatRoom() {
        // 채팅 내역 조회
        async function fetchChattingHistory() {
         try {
-            const response = await axios.get(
+            const response =await api.get(
                 `${process.env.REACT_APP_SERVER_URL}/plant-chat-service/chatroom/${id}?memberNo=${memberId}`, 
                 {
                     headers: {
@@ -179,7 +180,7 @@ function ChatRoom() {
     }
     const fetchCoupons = async () => {
         try {
-          const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/plant-coupon-service/coupon/${id}`, 
+          const response = await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-coupon-service/coupon/${id}`, 
           {headers: {
               Authorization: window.localStorage.getItem('bbs_access_token'),
           },
@@ -211,7 +212,7 @@ function ChatRoom() {
                 couponStatus: selectedCoupon ? '쿠폰사용' : '쿠폰미사용', // 쿠폰 상태 설정
             }
             console.log(paymentRequestDto)
-            const resp = await axios.post(`${process.env.REACT_APP_SERVER_URL}/plant-pay-service/payMoney/trade/?sellerNo=${sellerNo}`, paymentRequestDto, {
+            const resp = await api.post(`${process.env.REACT_APP_SERVER_URL}/plant-pay-service/payMoney/trade/?sellerNo=${sellerNo}`, paymentRequestDto, {
                 headers: {
                     Authorization: window.localStorage.getItem('bbs_access_token'),
                 },
@@ -261,7 +262,7 @@ function ChatRoom() {
         
         try {
             // 채팅 저장 및 알림 호출
-            await axios.post(`${process.env.REACT_APP_SERVER_URL}/plant-chat-service/chatroom/notification`, messageData, {
+            await api.post(`${process.env.REACT_APP_SERVER_URL}/plant-chat-service/chatroom/notification`, messageData, {
                 headers: {
                     Authorization: window.localStorage.getItem('bbs_access_token'),
                 },
@@ -307,7 +308,9 @@ function ChatRoom() {
                 <button onClick={sendMessage}>Send</button>
             </div>
             <div className="chat-complete-trade">
+            {isMine === true && (
                 <button onClick={handleCompleteTrade}>거래 완료</button>
+            )}
                 {isMine === false && (
               
               <button onClick={handleOpenPaymentModal} className="button-spacing">식구 페이로 송금</button>

@@ -1,8 +1,8 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import '../../css/SnsPostForm.css';
+import api from "../api"
 
 const SnsPostForm = () => {
   const [title, setTitle] = useState('');
@@ -13,7 +13,15 @@ const SnsPostForm = () => {
   const navigate = useNavigate();
 
   const handleImageChange = (event) => {
-    setSelectedFiles([...event.target.files]);
+    const files = Array.from(event.target.files);
+    const oversizedFiles = files.filter(file => file.size > 1048576); // 1MB = 1048576 bytes
+
+    if (oversizedFiles.length > 0) {
+      alert('파일 크기가 1MB를 초과합니다.');
+      return; // 이 경우 추가 작업을 중지
+    }
+
+    setSelectedFiles(files);
   };
 
   const handleHashTagsChange = (e) => {
@@ -62,16 +70,24 @@ const SnsPostForm = () => {
     });
 
     try {
-      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/plant-sns-service/snsPosts`, formData, {
+      const response = await api.post(`${process.env.REACT_APP_SERVER_URL}/plant-sns-service/snsPosts`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'
         }
       });
+      alert('게시글이 업로드되었습니다.');
+      navigate("/snspostlist");
       return response.data;
     } catch (error) {
-      console.error('게시글 업로드에 실패했습니다.', error);
-      throw error;
+      const resp = error.response.data;
+      console.log(resp);
+      if (resp.errorCodeName === "025"){
+        alert(resp.message);
+      }
+      if (resp.errorCodeName === "008"){
+        alert(resp.message);
+      }
     }
   };
 
@@ -81,8 +97,7 @@ const SnsPostForm = () => {
       try {
         const snsPostId = await uploadPost();
         console.log(snsPostId);
-        alert('게시글이 업로드되었습니다.');
-        navigate("/snspostlist");
+        
       } catch (error) {
         alert('업로드에 실패했습니다.');
       }

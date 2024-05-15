@@ -5,6 +5,7 @@ import '../../css/SnsPostList.css';
 import ImageGalleryComponent from "../bbs/ImageGalleryComponent";
 import ModalComponent from './ModalComponent';
 import SearchModalComponent from './SearchModalComponent';
+import api from "../api"
 
 
 
@@ -36,7 +37,7 @@ const SnsPostList = () => {
     
     const fetchPosts = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/plant-sns-service/snsPosts`, {
+        const response =await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-sns-service/snsPosts`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setPosts(response.data);
@@ -92,7 +93,7 @@ const SnsPostList = () => {
       </div>
     );
   };
-  const saveComment =  (postId , createdBy)=> {
+  const saveComment =  async(postId , createdBy)=> {
     const content = commentsContent[postId] || '';
     const snsCommentRequestDto={
       snsPostId: postId,
@@ -100,7 +101,7 @@ const SnsPostList = () => {
       createdBy: createdBy
     }
     try {
-      const response =  axios.post(`${process.env.REACT_APP_SERVER_URL}/plant-sns-service/snsComment`,snsCommentRequestDto, {
+      const response =  await api.post(`${process.env.REACT_APP_SERVER_URL}/plant-sns-service/snsComment`,snsCommentRequestDto, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setCommentsContent(prevComments => ({
@@ -109,12 +110,16 @@ const SnsPostList = () => {
       }));
       alert("댓글을 성공적으로 등록했습니다 :D");
     } catch (error) {
-      console.error('댓글을 저장하는데 데 실패했습니다.', error);
+      const resp = error.response.data;
+      console.log(resp);
+      if (resp.errorCodeName === "022"){
+        alert(resp.message);
+      }
     }
   };
   const handleLikeClick = async (postId, memberNo) => {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/plant-sns-service/snsPost/likes/`, null, {
+      const response =await api.post(`${process.env.REACT_APP_SERVER_URL}/plant-sns-service/snsPost/likes/`, null, {
         params: {
           id: postId,
           memberNo: memberNo
@@ -125,7 +130,11 @@ const SnsPostList = () => {
         window.location.reload();
       }
     } catch (error) {
-      console.error('좋아요 업데이트 실패:', error);
+      const resp = error.response.data;
+      console.log(resp);
+      if (resp.errorCodeName === "022"){
+        alert(resp.message);
+      }
     }
   };
   const getTimeSince = (createdAtArray) => {
@@ -165,7 +174,7 @@ const SnsPostList = () => {
   
   const fetchTopPostsWeek = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/plant-sns-service/snsPost/week/top-ten`, {
+      const response =await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-sns-service/snsPost/week/top-ten`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setTopPostsWeek(response.data);
@@ -178,7 +187,7 @@ const SnsPostList = () => {
 
   const fetchTopPostsMonth = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/plant-sns-service/snsPost/month/top-twenty`, {
+      const response =await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-sns-service/snsPost/month/top-twenty`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setTopPostsMonth(response.data);
@@ -190,7 +199,7 @@ const SnsPostList = () => {
   };
   const fetchTopHashTag = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/plant-sns-service/sns-hash-tag/top-ten`, {
+      const response =await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-sns-service/sns-hash-tag/top-ten`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       console.log(response.data);

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import api from "../api"
 
 const Payment = () => {
   const [amount, setAmount] = useState(0);
@@ -28,13 +29,13 @@ const Payment = () => {
     }, async (rsp) => {
       console.log(rsp);
       try {
-        const { data } = await axios.post(`${process.env.REACT_APP_SERVER_URL}/plant-pay-service/verifyIamport/` + rsp.imp_uid, {
+        const { data } = api.post(`${process.env.REACT_APP_SERVER_URL}/plant-pay-service/verifyIamport/` + rsp.imp_uid, {
           headers: { Authorization: `Bearer ${token}` }
       });
         if (rsp.paid_amount === data.response.amount) {
           alert('결제 성공');
           // 결제 성공 후 서버에 결제 정보 전송
-          await axios.post(`${process.env.REACT_APP_SERVER_URL}/plant-pay-service/payMoney`, {
+          api.post(`${process.env.REACT_APP_SERVER_URL}/plant-pay-service/payMoney`, {
             headers: { Authorization: `Bearer ${token}` }
         },{
             paymentRequestDto: {

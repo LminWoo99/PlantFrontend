@@ -5,6 +5,7 @@ import '../../css/ModalComponent.css';
 import ImageGalleryComponent from "../bbs/ImageGalleryComponent";
 import ConfirmModal from './ConfirmModal';
 import EditModal from './EditModal';
+import api from "../api"
 
 const ModalComponent = ({ postId, show, onClose }) => {
   const [comments, setComments] = useState([]);
@@ -74,7 +75,7 @@ const ModalComponent = ({ postId, show, onClose }) => {
 
   const fetchComments = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/plant-sns-service/snsComment/${postId}`, {
+      const response = await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-sns-service/snsComment/${postId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -94,7 +95,7 @@ const ModalComponent = ({ postId, show, onClose }) => {
     setSelectedCommentId(null);
     console.log(snsCommentRequestDto);
     try {
-      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/plant-sns-service/snsComment`,snsCommentRequestDto, {
+      const response =await api.post(`${process.env.REACT_APP_SERVER_URL}/plant-sns-service/snsComment`,snsCommentRequestDto, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -109,13 +110,17 @@ const ModalComponent = ({ postId, show, onClose }) => {
   };
   const fetchPost = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/plant-sns-service/snsPost/${postId}`, {
+      const response = await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-sns-service/snsPost/${postId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setPost(response.data);
       console.log(response.data);
     } catch (error) {
-      console.error('Failed to load post', error);
+      const resp = error.response.data;
+      console.log(resp);
+      if (resp.errorCodeName === "022"){
+        alert(resp.message);
+      }
     }
   };
   const handleReply = (username, commentId) => {
@@ -125,7 +130,7 @@ const ModalComponent = ({ postId, show, onClose }) => {
   };
   const deletePost = async () => {
     try {
-      await axios.delete(`${process.env.REACT_APP_SERVER_URL}/plant-sns-service/snsPost/${postId}`, {
+      await api.delete(`${process.env.REACT_APP_SERVER_URL}/plant-sns-service/snsPost/${postId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -148,7 +153,7 @@ const ModalComponent = ({ postId, show, onClose }) => {
     };
 
     try {
-      const response = await axios.patch(`${process.env.REACT_APP_SERVER_URL}/plant-sns-service/snsPost`, snsPostRequestDto, {
+      const response = await api.patch(`${process.env.REACT_APP_SERVER_URL}/plant-sns-service/snsPost`, snsPostRequestDto, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -158,7 +163,11 @@ const ModalComponent = ({ postId, show, onClose }) => {
         fetchPost(); // 수정된 게시글 정보 가져오기
       }
     } catch (error) {
-      console.error('게시글을 수정하는데 실패했습니다.', error);
+      const resp = error.response.data;
+      console.log(resp);
+      if (resp.errorCodeName === "022"){
+        alert(resp.message);
+      }
     }
   };
   const commentInputRef = useRef(null);
@@ -220,7 +229,7 @@ const ModalComponent = ({ postId, show, onClose }) => {
   };
   const deleteComment = async (commentId) => {
     try {
-      await axios.delete(`${process.env.REACT_APP_SERVER_URL}/plant-sns-service/snsComment/${commentId}`, {
+      await api.delete(`${process.env.REACT_APP_SERVER_URL}/plant-sns-service/snsComment/${commentId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setComments(comments.filter(comment => comment.id !== commentId)); // 삭제된 댓글 제거

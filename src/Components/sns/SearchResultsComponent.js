@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import '../../css/SnsProfile.css'; 
 import ModalComponent from './ModalComponent';
 import SearchModalComponent from './SearchModalComponent';
+import api from "../api"
 
 const SearchResultsComponent = () => {
   const [searchResults, setSearchResults] = useState([]);
@@ -26,7 +27,7 @@ const SearchResultsComponent = () => {
 
   const fetchSearchResults = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/plant-sns-service/snsPosts/search?${searchCondition}=${searchTerm}`, {
+      const response = await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-sns-service/snsPosts/search?${searchCondition}=${searchTerm}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSearchResults(response.data);

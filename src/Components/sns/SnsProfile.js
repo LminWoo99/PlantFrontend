@@ -5,6 +5,7 @@ import '../../css/SnsProfile.css';
 import { Link } from 'react-router-dom';
 import ModalComponent from './ModalComponent';
 import SearchModalComponent from './SearchModalComponent';
+import api from "../api"
 
 const SnsProfile = () => {
   const [posts, setPosts] = useState([]);
@@ -16,7 +17,7 @@ const SnsProfile = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/plant-sns-service/snsPosts/nickname/${createdBy}`, {
+        const response =await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-sns-service/snsPosts/nickname/${createdBy}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setPosts(response.data);

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import '../../css/ChatList.css';
+import api from "../api"
 
 const ChatList = () => {
   const [chatRooms, setChatRooms] = useState([]);
@@ -14,7 +15,7 @@ const ChatList = () => {
   useEffect(() => {
     const fetchChatRooms = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/plant-chat-service/chatroom`, {
+        const response =await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-chat-service/chatroom`, {
           params: {
             tradeBoardNo: tradeBoardNo,
             memberNo: memberId
@@ -48,7 +49,7 @@ const ChatList = () => {
     fetchChatRooms();
   }, [tradeBoardNo, memberId, token]); // 의존성 배열에 변수 추가
 
-  // Time since function
+
   const timeSince = (timestamp) => {
     const now = new Date();
     console.log(timestamp);

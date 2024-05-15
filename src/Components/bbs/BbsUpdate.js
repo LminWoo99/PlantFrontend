@@ -5,6 +5,7 @@ import { AuthContext } from "../../context/AuthProvider";
 import { HttpHeadersContext } from "../../context/HttpHeadersProvider";
 import { IdContext } from "../../context/IdProvider";
 import BuyerSelection from "./BuyerSelection";
+import api from "../api"
 
 function BbsUpdate() {
   const { headers, setHeaders } = useContext(HttpHeadersContext);
@@ -49,8 +50,7 @@ console.log(status);
 	    price: price
     };
 
-    await axios
-      .put(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/list/${tradeBoardDto.id}`, req, {
+    await api.put(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/list/${tradeBoardDto.id}`, req, {
         headers: headers,
       })
       .then((resp) => {
@@ -59,6 +59,7 @@ console.log(status);
         
       
         alert("게시글을 성공적으로 수정했습니다 :D");
+        navigate(`/bbsdetail/${id}`)
         
       })
       .catch((err) => {

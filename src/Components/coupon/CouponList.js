@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../../css/CouponList.css'; 
+import api from "../api"
 
 const CouponList = () => {
   const [coupons, setCoupons] = useState([]);
@@ -8,7 +9,7 @@ const CouponList = () => {
   useEffect(() => {
     const fetchCoupons = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/plant-coupon-service/coupon/${memberNo}`, 
+        const response = await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-coupon-service/coupon/${memberNo}`, 
         {headers: {
             Authorization: window.localStorage.getItem('bbs_access_token'),
         },

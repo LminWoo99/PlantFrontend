@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "../../css/WishList.css"; // 리사이클러뷰 스타일링을 위한 CSS 파일
+import api from "../api"
 
 function WishList() {
   const [wishlist, setWishlist] = useState([]);
   const memberId = localStorage.getItem("id");
-
+  const token = localStorage.getItem("bbs_access_token");
   useEffect(() => {
     if (memberId) {
       fetchWishlist(memberId);
@@ -17,7 +18,10 @@ function WishList() {
 
   const fetchWishlist = async (id) => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/goods/${id}`);
+      const response = await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/goods/${id}`, {headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
       setWishlist(response.data);
       console.log(response);
     } catch (error) {

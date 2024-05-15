@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../../css/SearchModal.css';
 import { useNavigate } from 'react-router-dom';
+import api from "../api"
 
 const SearchModalComponent = ({ isOpen, onClose }) => {
   const token = localStorage.getItem("bbs_access_token");

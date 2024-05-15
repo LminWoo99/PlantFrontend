@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import api from "../api"
 
 function FindId() {
   const [email, setEmail] = useState("");
@@ -12,7 +13,7 @@ function FindId() {
 
   const handleFindId = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/findId?email=${email}`,
+      const response = await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/user/id?email=${email}`,
       {headers: {
         Authorization: `Bearer ${token}`,
       },

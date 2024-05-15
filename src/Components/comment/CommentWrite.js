@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { HttpHeadersContext } from "../../context/HttpHeadersProvider";
 import axios from "axios";
+import api from "../api"
 
 function CommentWrite(props) {
   const { headers, setHeaders } = useContext(HttpHeadersContext);
@@ -32,8 +33,7 @@ function CommentWrite(props) {
       secret: isSecret ? 'yes' : 'no',
     };
 	console.log(requestDto);
-    await axios
-      .post(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/comment`, requestDto, { headers: headers })
+  await api.post(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/comment`, requestDto, { headers: headers })
       .then((resp) => {
         console.log("[CommentWrite.js] createComment() success :D");
         console.log(resp.data);

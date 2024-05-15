@@ -5,6 +5,8 @@ import Pagination from "react-js-pagination";
 import styled from "styled-components";
 import "../../css/PlantList.css";
 import { HttpHeadersContext } from "../../context/HttpHeadersProvider";
+import api from "../api"
+
 function PlantList() {
   const [plants, setPlants] = useState([]);
   const [searchVal, setSearchVal] = useState("");
@@ -16,8 +18,8 @@ function PlantList() {
     loadPlants();
   }, [pageable]);
 
-  const loadPlants = () => {
-    axios
+  const loadPlants = async () => {
+    await api
       .get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/plantList?search=${searchVal}&page=${pageable-1}`, { headers: headers })
       .then((response) => {
         setPlants(response.data.content);

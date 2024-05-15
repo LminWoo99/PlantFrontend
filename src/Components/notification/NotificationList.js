@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import moment from 'moment';
 import '../../css/NotificationList.css';
+import api from "../api"
 
 const NotificationList = () => {
     const token = localStorage.getItem("bbs_access_token");
@@ -11,7 +12,7 @@ const NotificationList = () => {
     useEffect(() => {
         const fetchNotifications = async () => {
             try {
-                const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/plant-chat-service/notification/all?memberNo=${memberNo}`, {
+                const response = await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-chat-service/notification/all?memberNo=${memberNo}`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 setNotifications(response.data);
@@ -30,7 +31,7 @@ const NotificationList = () => {
         useEffect(() => {
             const fetchSenderName = async () => {
                 try {
-                    const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/findId?id=${notification.senderNo}`, { 
+                    const response =await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/user/pk?id=${notification.senderNo}`, { 
                         headers: { Authorization: `Bearer ${token}` }
                     });
                     setSenderName(response.data.nickname); 
@@ -46,7 +47,7 @@ const NotificationList = () => {
             // event.preventDefault(); // 기본 이벤트를 방지합니다.
             try {
                 
-                const response = await axios.patch(`${process.env.REACT_APP_SERVER_URL}/plant-chat-service/notification/checked/${notification.id}`, {}, {
+                const response = await api.patch(`${process.env.REACT_APP_SERVER_URL}/plant-chat-service/notification/checked/${notification.id}`, {}, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
             } catch (error) {
@@ -55,7 +56,7 @@ const NotificationList = () => {
         };
         const handleDeleteClick = async () => {
             try {
-                const response = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/plant-chat-service/notification`, {
+                const response = await api.delete(`${process.env.REACT_APP_SERVER_URL}/plant-chat-service/notification`, {
                     headers: { Authorization: `Bearer ${token}` },
                     data: { idList: [notification.id] } 
                 });

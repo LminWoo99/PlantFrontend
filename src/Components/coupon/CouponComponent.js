@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../../css/CouponComponent.css'; // 가정한 CSS 파일 경로
+import api from "../api"
 
 function CouponComponent() {
   const [isEventTime, setIsEventTime] = useState(false);
@@ -30,7 +31,7 @@ function CouponComponent() {
           discountPrice: 3000,
         };
 
-        const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/plant-coupon-service/coupon`, couponData,  {
+        const response =await api.post(`${process.env.REACT_APP_SERVER_URL}/plant-coupon-service/coupon`, couponData,  {
             headers: {
                 Authorization: window.localStorage.getItem('bbs_access_token'),
             },

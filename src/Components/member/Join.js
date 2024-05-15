@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import api from "../api"
 
 function Join() {
   const [username, setUsername] = useState("");
@@ -9,7 +10,7 @@ function Join() {
   const [checkpassword, setCheckpassword] = useState("");
 
   const [email, setEmail] = useState("");
-
+  
   const [passwordMismatch, setPasswordMismatch] = useState(false);
   const [requiredFieldsMissing, setRequiredFieldsMissing] = useState(false);
 
@@ -62,8 +63,7 @@ function Join() {
 
   /* 아이디 중복 체크 */
   const checkUsernameDuplicate = async () => {
-    await axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/duplicate`, { params: { username: username } })
+    await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/user/username-chk`, { params: { username: username } })
       .then((resp) => {
         console.log("[Join.js] checkUsernameDuplicate() success :D");
         console.log(resp.data);
@@ -86,8 +86,7 @@ function Join() {
 
   /* 닉네임 중복 체크 */
   const checkNicknameDuplicate = async () => {
-    await axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/duplicate/nickname`, { params: { nickname: nickname } })
+    await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/user/nickname-chk`, { params: { nickname: nickname } })
       .then((resp) => {
         console.log("[Join.js] checkNicknameDuplicate() success :D");
         console.log(resp.data);
@@ -109,8 +108,7 @@ function Join() {
   };
    /* 이메일 중복 체크 */
    const checkEmailDuplicate = async () => {
-    await axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/duplicate/email`, { params: { email: email } })
+    await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/user/email-chk`, { params: { email: email } })
       .then((resp) => {
         console.log("[Join.js] checkEmailDuplicate() success :D");
         console.log(resp.data);
@@ -173,7 +171,7 @@ function Join() {
       email: email,
     };
 
-    await axios
+    await api
       .post(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/user/save`, req)
       .then((resp) => {
         console.log("[Join.js] join() success :D");
@@ -197,11 +195,11 @@ function Join() {
       alert("이메일 중복 확인을 해주세요.");
       return;
     }
-    axios
-      .post(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/mailConfirm`, { email: email } )
+    api.post(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/mailConfirm`, { email: email } )
       .then((resp) => {
         alert("해당 이메일로 인증번호 발송이 완료되었습니다. 확인부탁드립니다.");
         setCode(resp.data);
+        setShowEmailVerification(true);
       })
       .catch((err) => {
         console.error(err);

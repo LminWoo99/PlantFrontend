@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../../css/PaymentPage.css';
+import api from "../api"
 
 const PayMentPage = () => {
   const memberNo = localStorage.getItem('id');
@@ -17,8 +18,7 @@ const PayMentPage = () => {
   const token = localStorage.getItem("bbs_access_token");
   useEffect(() => {
     console.log(token)
-    axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/plant-pay-service/payMoney/${memberNo}`, {headers: { Authorization: `Bearer ${token}` }})
+    api.get(`${process.env.REACT_APP_SERVER_URL}/plant-pay-service/payMoney/${memberNo}`, {headers: { Authorization: `Bearer ${token}` }})
       .then((response) => {
         setPayMoney(response.data.payMoney);
         setLoading(false);
@@ -56,7 +56,7 @@ const PayMentPage = () => {
       console.log(rsp);
       try {
         
-        const { data } = await axios.post(`${process.env.REACT_APP_SERVER_URL}/plant-pay-service/verifyIamport/` + rsp.imp_uid, {
+        const { data } = api.post(`${process.env.REACT_APP_SERVER_URL}/plant-pay-service/verifyIamport/` + rsp.imp_uid, {
           headers: { Authorization: `Bearer ${token}` }
       });
         if (rsp.paid_amount === data.response.amount) {
@@ -67,7 +67,7 @@ const PayMentPage = () => {
             payMoney: data.response.amount,
               memberNo: memberNo
           }
-          await axios.post(`${process.env.REACT_APP_SERVER_URL}/plant-pay-service/payMoney/charge`,paymentRequestDto,{
+          api.post(`${process.env.REACT_APP_SERVER_URL}/plant-pay-service/payMoney/charge`,paymentRequestDto,{
             headers: { Authorization: `Bearer ${token}` }
         } );
           window.location.reload();
@@ -91,7 +91,7 @@ const PayMentPage = () => {
     };
     console.log(refundData);
     try {
-      await axios.patch(
+      api.patch(
         `${process.env.REACT_APP_SERVER_URL}/plant-pay-service/payMoney/refund`,refundData, {
           headers: { Authorization: `Bearer ${token}` }
       }

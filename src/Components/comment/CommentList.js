@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import Pagination from "react-js-pagination";
+import api from "../api"
 
 import Comment from "./Comment.js"
 
@@ -21,7 +22,7 @@ function CommentList(props) {
 	}
 
 	const getCommentList = async (pageable) => {
-		await axios.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/comment`, { params: { "tradeBoardId": tradeBoardId, "pageable": pageable-1 },  headers: {
+		await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/comment`, { params: { "tradeBoardId": tradeBoardId, "pageable": pageable-1 },  headers: {
 			Authorization: `Bearer ${token}`,
 		  } })
 			.then((resp) => {
