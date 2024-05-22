@@ -75,6 +75,8 @@ const NotificationList = () => {
                     return `${senderName}님이 회원님의 중고 거래글을 찜하셨습니다.`;
                 case "좋아요":
                     return `${senderName}님이 회원님의 게시글에 좋아요를 누르셨습니다.`;
+                case "키워드":
+                    return `${notification.content} 키워드 거래글이 올라왔습니다`;
                 case "채팅":
                 default:
                     return notification.content;
@@ -89,6 +91,8 @@ const NotificationList = () => {
                     return "tradeboard-goods";
                 case "좋아요":
                     return "sns-heart";
+                case "키워드":
+                    return "keyword";
                 case "채팅":
                 default:
                     return "chat";

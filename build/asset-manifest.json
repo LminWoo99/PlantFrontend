@@ -1,22 +1,17 @@
 {
   "files": {
-    "main.css": "/static/css/main.45f27686.css",
-    "main.js": "/static/js/main.e64731cc.js",
+    "main.css": "/static/css/main.858cf4f2.css",
+    "main.js": "/static/js/main.ebb07bca.js",
     "static/js/787.8ac9d2ba.chunk.js": "/static/js/787.8ac9d2ba.chunk.js",
     "static/media/DNFBitBitTTF.ttf": "/static/media/DNFBitBitTTF.60278e3e9aaa53efd625.ttf",
-    "static/media/스크린샷 2023-09-04 오후 6.41.40.png": "/static/media/스크린샷 2023-09-04 오후 6.41.40.d6946a1c5bfbeee733f4.png",
     "static/media/plant.png": "/static/media/plant.31e27cf1f2e89794bf6b.png",
-    "static/media/slick.svg": "/static/media/slick.2630a3e3eab21c607e21.svg",
-    "static/media/slick.eot": "/static/media/slick.a4e97f5a2a64f0ab1323.eot",
-    "static/media/slick.ttf": "/static/media/slick.c94f7671dcc99dce43e2.ttf",
-    "static/media/slick.woff": "/static/media/slick.295183786cd8a1389865.woff",
     "index.html": "/index.html",
-    "main.45f27686.css.map": "/static/css/main.45f27686.css.map",
-    "main.e64731cc.js.map": "/static/js/main.e64731cc.js.map",
+    "main.858cf4f2.css.map": "/static/css/main.858cf4f2.css.map",
+    "main.ebb07bca.js.map": "/static/js/main.ebb07bca.js.map",
     "787.8ac9d2ba.chunk.js.map": "/static/js/787.8ac9d2ba.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.45f27686.css",
-    "static/js/main.e64731cc.js"
+    "static/css/main.858cf4f2.css",
+    "static/js/main.ebb07bca.js"
   ]
 }

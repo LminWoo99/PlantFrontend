@@ -14,6 +14,7 @@ function BbsWrite() {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [price, setPrice] = useState("");
+    const [keywordContent, setKeywordContent]=useState("");
     const username=localStorage.getItem("username");
 
     const [selectedFiles, setSelectedFiles] = useState([]);
@@ -29,6 +30,9 @@ function BbsWrite() {
     const changeContent = (event) => {
         setContent(event.target.value);
     };
+    const changeKeywordContent= (event) =>{
+        setKeywordContent(event.target.value);
+    }
 
     const changePrice = (event) => {
         const inputPrice = event.target.value.replace(/[^0-9]/g, "");
@@ -47,14 +51,16 @@ function BbsWrite() {
             alert("중고 거래시 이미지 등록은 필수입니다 !");
             return;
         }
-
+        console.log(keywordContent);
         const formData = new FormData();
         formData.append("tradeBoardDto", new Blob([JSON.stringify({
             id: id,
             title: title,
             content: content,
+            keywordContent: keywordContent,
             price: parseInt(price.replace(/,/g, '')),
-            username: username
+            username: username,
+            keyWordContent: keywordContent
         })], {
             type: "application/json"
         }));
@@ -100,8 +106,20 @@ function BbsWrite() {
                                 value={content}
                                 onChange={changeContent}
                                 placeholder="식물, 식물용품에 대한 자세한 설명을 입력해주세요"
-                                rows="10"
+                                rows="20"
                             ></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th className="table-primary">카테고리 설정</th>
+                        <td>
+                            <input
+                                type="text"
+                                className="form-control"
+                                value={keywordContent}
+                                onChange={changeKeywordContent}
+                                placeholder="카테고리 설정해주세요!(하나만 작성 가능 선택사항)"
+                            ></input>
                         </td>
                     </tr>
                     <tr>

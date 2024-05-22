@@ -5,81 +5,116 @@
   margin: 0;
   padding: 20px;
   background: #f4f5f7;
-  border-radius: 0;
   display: grid;
   grid-template-columns: 1fr 4fr;
   box-sizing: border-box;
 }
+
 .write-post-link {
   grid-column: 1 / 2;
   align-self: start;
   justify-self: start;
-  align-self: start;
 }
+
 .sns-sidebar {
-  min-width: 25%; /* Sidebar takes 25% of the space */
+  min-width: 25%;
   border-right: 2px solid #dbdbdb;
   padding: 20px;
   box-sizing: border-box;
 }
-.sns-sidebar-button {
+
+.sidebar-link {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.sidebar-button {
   width: 100%;
-  padding: 8px;
+  padding: 10px;
   border-radius: 4px;
   border: 2px solid #dbdbdb;
-  margin-bottom: 8px;
   background-color: white;
   cursor: pointer;
   font-weight: bold;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
+
+.sidebar-button:hover {
+  background-color: #04B486;
+  color: white;
+}
+
 .posts-container {
-  flex-grow: 1; /* Posts take the remaining space */
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  margin-left: 90px;
   gap: 20px;
-}
-.post-title{
-  color: #2c3e50;
-
-  margin-left: 15px;
+  padding: 0 20px;
 }
 
 .post-card {
-  list-style: none;
   background: white;
-  border: 4px solid #dbdbdb;
   border-radius: 10px;
   overflow: hidden;
-  object-fit: cover;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  max-width: 100%;
-  border: 1px solid #dbdbdb; /* Thinner border */
-  box-shadow: none;
+  border: 1px solid #dbdbdb;
 }
 
 .post-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #dbdbdb;
+}
+
+.sns-profile-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.author-link {
+  color: #2c3e50;
+  font-weight: bold;
+  margin-left: 10px;
+  text-decoration: none;
+}
+
+.author-link:hover {
+  text-decoration: underline;
+}
+
+.post-time {
+  color: #888;
+  font-size: 0.85em;
+  margin-left: auto;
+}
+
+.post-title {
+  padding: 15px;
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #2c3e50;
 }
 
 .post-image-container {
-  position:relative;
-  overflow: hidden; 
+  position: relative;
+  overflow: hidden;
 }
 
 .post-image {
   width: 100%;
-  height: 100%;
-  object-fit: cover; 
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  object-fit: cover;
 }
 
 .post-content {
   padding: 15px;
-  color: black;
 }
 
 .post-text {
@@ -88,12 +123,12 @@
   margin-bottom: 10px;
   overflow: hidden;
   display: -webkit-box;
-  white-space: pre-wrap; /* 공백과 줄바꿈 문자 유지 */
-  word-break: break-all; 
-
   -webkit-box-orient: vertical;
-  max-height: 4.5em; 
+  max-height: 4.5em;
+  white-space: pre-wrap;
+  word-break: break-all;
 }
+
 .expanded {
   max-height: none;
 }
@@ -102,7 +137,9 @@
   color: #0095f6;
   font-size: 14px;
   cursor: pointer;
-  
+  background: none;
+  border: none;
+  padding: 0;
 }
 
 .likes-and-comments {
@@ -121,6 +158,15 @@
 
 .likes i, .comments i {
   margin-right: 5px;
+  cursor: pointer;
+}
+
+.likes .fa-heart {
+  color: #ccc;
+}
+
+.likes .fa-heart.liked {
+  color: red;
 }
 
 .hashtags {
@@ -137,8 +183,6 @@
   font-size: 12px;
 }
 
-
-
 .comment-input-container {
   display: flex;
   border-top: 1px solid #dbdbdb;
@@ -148,10 +192,10 @@
 
 .comment-input {
   flex: 1;
-
   padding: 8px;
   margin-right: 8px;
-  border:1px solid #2c3e50;
+  border: 1px solid #dbdbdb;
+  border-radius: 4px;
 }
 
 .post-comment-button {
@@ -162,108 +206,81 @@
   padding: 8px 16px;
   cursor: pointer;
 }
-.post-time {
-  color: #888;
-  font-size: 0.85em;
-  margin-left: 8px; /* Adjust as needed */
-}
-.fa-heart {
-  color: #ccc; /* 기본 색상 */
-  cursor: pointer;
-}
 
-.fa-heart.liked {
-  color: red; /* 좋아요 상태일 때의 색상 */
-}
-@media (max-width: 768px) {
-  .sns-post-list {
-    grid-template-columns: 1fr; /* 모든 공간을 한 열로 사용 */
-  }
-
-  .posts-container {
-    margin-left: 0; /* 작은 화면에서는 여백 제거 */
-    padding: 10px; /* 적당한 패딩으로 조정 */
-  }
-
-  .sns-sidebar {
-    min-width: 100%; /* 사이드바 너비를 화면 너비와 동일하게 조정 */
-    border-right: none; /* 분리선 제거 */
-    border-bottom: 2px solid #dbdbdb; /* 아래쪽에 경계선 추가 */
-  }
-
-  .post-card {
-    border-radius: 5px; /* 모서리 둥글기 조정 */
-  }
-
-  .post-content, .post-text, .show-more, .likes, .comments, .hashtags {
-    font-size: 12px; /* 텍스트 크기 축소 */
-  }
-
-  .post-image {
-    height: auto; /* 이미지 높이 자동 조정 */
-  }
-
-  .comment-input-container {
-    flex-direction: column; /* 댓글 입력과 버튼을 위/아래로 배열 */
-    padding: 8px; /* 패딩 조정 */
-  }
-
-  .comment-input {
-    margin-right: 0; /* 오른쪽 마진 제거 */
-    margin-bottom: 8px; /* 입력창과 버튼 사이 간격 추가 */
-  }
-
-  .post-comment-button {
-    width: 100%; /* 버튼 너비를 입력창과 동일하게 조정 */
-  }
-
-  .fa-heart {
-    /* Example for overriding an icon's style */
-    font-size: 20px; /* Adjust icon size for better mobile interaction */
-  }
-}
-.view-count{
+.view-count {
   color: #949393;
 }
 
-.sidebar-popular-button {
-  width: 100%;
-  padding: 8px;
-  border-radius: 4px;
-  border: 2px solid #dbdbdb;
-  background-color: white;
-  margin-bottom: 5px;
-  cursor: pointer;
-  font-weight: bold;
-}
 .popular-posts-header {
   display: flex;
-  justify-content: space-evenly; /* This will space your buttons evenly */
+  justify-content: space-evenly;
   align-items: center;
-  margin-bottom: 10px; /* Add some space before the divider */
+  margin-bottom: 10px;
+  gap: 84px;
 }
 
 .popular-button {
-  padding: 8px 16px; 
+  padding: 8px 20px;
   cursor: pointer;
-  border-bottom: 2px solid #111010;
+  border: none;
   border-radius: 14px;
-  background-color: white;
-  flex: 1; 
-  white-space: nowrap; 
-  margin: 0 5px; 
+  background-color: #e7e7e7;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.popular-button.week {
-  background-color: #f0f0f0;
-}
-
-.popular-button.month {
-  background-color: #e7e7e7; 
+.popular-button:hover {
+  background-color: #04B486;
+  color: white;
 }
 
 .posts-divider {
   border-bottom: 2px solid #111010;
   height: 2px;
-  
+}
+
+@media (max-width: 768px) {
+  .sns-post-list {
+    grid-template-columns: 1fr;
+  }
+
+  .posts-container {
+    margin-left: 0;
+    padding: 10px;
+  }
+
+  .sns-sidebar {
+    min-width: 100%;
+    border-right: none;
+    border-bottom: 2px solid #dbdbdb;
+  }
+
+  .post-card {
+    border-radius: 5px;
+  }
+
+  .post-content, .post-text, .show-more, .likes, .comments, .hashtags {
+    font-size: 12px;
+  }
+
+  .post-image {
+    height: auto;
+  }
+
+  .comment-input-container {
+    flex-direction: column;
+    padding: 8px;
+  }
+
+  .comment-input {
+    margin-right: 0;
+    margin-bottom: 8px;
+  }
+
+  .post-comment-button {
+    width: 100%;
+  }
+
+  .fa-heart {
+    font-size: 20px;
+  }
 }

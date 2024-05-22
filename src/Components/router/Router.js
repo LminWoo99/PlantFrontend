@@ -36,6 +36,7 @@ import TopPostsWeek from "../sns/TopPostsWeek";
 import TopPostsMonth from "../sns/TopPostsMonth";
 import TopHashTags from "../sns/TopHashTags";
 import ModalComponent from "../sns/ModalComponent";
+import KeywordList from "../keyword/KeywordList";
 
 function Router() {
 
@@ -47,6 +48,7 @@ function Router() {
 				<Route path="/resetmember" element={<ResetPassword />}></Route>
 				<Route path="/bbslist" element={<BbsList />}></Route>
 				<Route path="myaccount" element={<MyAccountPage />}></Route>
+				<Route path="/keywordlist" element={<KeywordList />}></Route>
 				
 				<Route path="/bbswrite" element={<BbsWrite />}></Route>
 				<Route path="/bbsdetail/:id" element={<BbsDetail />}></Route>

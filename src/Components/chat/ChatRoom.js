@@ -53,15 +53,19 @@ function ChatRoom() {
     }, [id]);
 
     useEffect(() => {
-        const socket = new SockJS(`https://api.sikguhaza.site:8443/plant-chat-service/chat`, null);
+
+        console.log(tradeBoardNo);
+        const socket = new SockJS(`${process.env.REACT_APP_SERVER_URL}/plant-chat-service/chat`, null);
         stompClient.current = Stomp.over(socket);
         stompClient.current.connect({
             Authorization: window.localStorage.getItem('bbs_access_token'),
             chatRoomNo: id,
+            tradeBoardNo: tradeBoardNo,
             keepalive: true
         }, () => {
             console.log('Connected to WebSocket');
             stompClient.current.subscribe(`/subscribe/public/${id}`, (message) => {
+                
                 console.log(message);
                 fetchChattingHistory();
             },{
@@ -71,7 +75,9 @@ function ChatRoom() {
                 fetchChattingHistory();
             }
         });
-
+        window.addEventListener('beforeunload', () => {
+			disconnectChat();
+		});
         return () => {
             if (stompClient.current) {
                 stompClient.current.disconnect(() => {
@@ -80,7 +86,7 @@ function ChatRoom() {
                 });
             }
         };
-    }, [id]);
+    }, [id, tradeBoardNo]);
 
     useEffect(() => {
         messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -214,10 +220,14 @@ function ChatRoom() {
         } catch (error) {
             console.error('Error sending message:', error);
             const resp = error.response.data;
+            console.log(resp);
               if (resp.errorCodeName === "011"){
                   alert(resp.message);
                   return false; // 검증 실패
                 }
+                if(resp.errorCodeName==="002"){
+                    alert("페이 머니를 충전해주세요!");
+                  }
         }
     };
 
@@ -231,7 +241,8 @@ function ChatRoom() {
             if (resp.status === 200) {
                 setShowPaymentPopup(false);
                 alert("성공적으로 송금되었습니다.");
-                setMessages(prevMessages => [...prevMessages, { content: '성공적으로 송금되었습니다.', mine: true }]);
+                setInputMessage("성공적으로 송금되었습니다");
+                sendMessage();
             } else {
                 alert('결제 처리 중 문제가 발생했습니다.');
             }
@@ -246,6 +257,9 @@ function ChatRoom() {
                 if(resp.errorCodeName==="026"){
                   alert(resp.message);
                 }
+                if(resp.errorCodeName==="002"){
+                    alert("페이 머니를 충전해주세요!");
+                  }
         }
     };
 
@@ -264,8 +278,12 @@ function ChatRoom() {
             await sendPayment(paymentRequestDto);
         }
     };
-
     const sendMessage = async () => {
+        if (!tradeBoardNo) {
+            alert("tradeBoardNo가 없습니다. 다시 시도해 주세요.");
+            return;
+        }
+    
         const messageData = {
             chatNo: id,
             contentType: "application/json",
@@ -277,7 +295,7 @@ function ChatRoom() {
             readCount: Number(1),
             senderEmail: email
         };
-
+    
         try {
             stompClient.current.send(
                 '/publish/message',
@@ -286,6 +304,7 @@ function ChatRoom() {
             );
         } catch (error) {
             console.error('Error sending message:', error);
+            return;
         }
         
         try {
@@ -299,13 +318,13 @@ function ChatRoom() {
             const resp = error.response.data;
             console.log(resp);
             if (resp.errorCodeName === "015"){
-              alert(resp.message);
+                alert(resp.message);
             }
         }
         
         setInputMessage('');
     };
-
+    
     return (
         <div className="chat-room-container">
             {messages.map((message, index) => (

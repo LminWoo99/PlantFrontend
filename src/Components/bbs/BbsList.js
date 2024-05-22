@@ -74,7 +74,7 @@ function BbsList() {
                             <input
                                 type="text"
                                 className="form-control"
-                                placeholder="제목, 내용으로 검색"
+                                placeholder="제목, 내용, 키워드로 검색"
                                 value={searchVal}
                                 onChange={changeSearch}
                             />

@@ -1,0 +1,66 @@
+.keyword-manager {
+    width: 80%;
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #121212;
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.input-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.keyword-manager input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    margin-right: 10px;
+    background-color: #333;
+    color: white;
+}
+
+.keyword-manager button {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #ff5722;
+    color: white;
+    cursor: pointer;
+}
+
+.keyword-list {
+    max-height: 300px; /* Set a fixed height for the scrollable area */
+    overflow-y: auto; /* Enable vertical scrolling */
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.keyword-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.delete-button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+@media (max-width: 600px) {
+    .keyword-manager {
+        width: 90%;
+    }
+}

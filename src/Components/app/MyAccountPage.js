@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../../css/MyAccountPage.css'; // CSS 파일 임포트
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 
 const MyAccountPage = () => {
   const nickname=localStorage.getItem("nickname");
@@ -24,6 +24,9 @@ const MyAccountPage = () => {
         </li>
         <li className="account-item">
           <Link to="/couponList" className="account-link"><i class="fas fa-ticket-alt" style={{ color: "#FFD43B" }}></i>&nbsp;  나의 쿠폰 내역</Link>
+        </li>   
+        <li className="account-item">
+          <Link to="/keywordList" className="account-link"><i class="fas fa-list" style={{ color: "#ff0000" }}></i>&nbsp;  키워드 설정 정보</Link>
         </li>
       </ul>
 

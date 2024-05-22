@@ -10,13 +10,13 @@ import "./css/style.css"
 import "./index.css";
 import ErrorBoundary from "./Components/error/ErrorBoundary";
 import NotificationsDisplay from "./Components/notification/NotificationDisplay";
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+
+
 
 function App() {
-
+  
   return (
-        <BrowserRouter>
+    <BrowserRouter>
             <AuthProvider>
               <HttpHeadersProvider>
                 <NotificationsDisplay />
@@ -26,7 +26,7 @@ function App() {
                 <Footer />
               </HttpHeadersProvider>
             </AuthProvider>
-        </BrowserRouter>
+      </BrowserRouter>
 
   );
 }

@@ -119,12 +119,11 @@ function PlantList() {
 
   return (
     <Container>
-      <h2>식물 목록</h2>
+      <Title>식물 목록</Title>
       <ButtonWrapper>
-      <ResetButton onClick={handleReset}><i class="fas fa-redo"></i></ResetButton>
+        <ResetButton onClick={handleReset}><i className="fas fa-redo"></i></ResetButton>
         <MainButton onClick={handleCategoryClick}>식물 종류 별 검색</MainButton>
         <MainButton onClick={handleManageClick}>관리 난이도 검색</MainButton>
-        
       </ButtonWrapper>
         
       {showCategoryButtons && (
@@ -144,8 +143,6 @@ function PlantList() {
       )}
       <SearchWrapper>
         <SearchInput
-          className="search__input"
-          id="search__input"
           type="text"
           placeholder="식물 이름을 검색해 주세요"
           value={searchVal}
@@ -168,14 +165,14 @@ function PlantList() {
           ))
         ) : (
           plants.map((plant) => (
-            <div key={plant.id}>
+            <FadeInDiv key={plant.id}>
               <PlantCard>
                 <Link to={{ pathname: `/plantdetail/${plant.id}` }}>
                   <PlantImage src={plant.thumbFile} alt="식물 이미지" />
                 </Link>
               </PlantCard>
               <PlantName>{plant.plantName}</PlantName>
-            </div>
+            </FadeInDiv>
           ))
         )}
       </PlantGrid>
@@ -208,42 +205,74 @@ const fadeIn = keyframes`
 const Container = styled.div`
   text-align: center;
   padding: 20px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+`;
+
+const Title = styled.h2`
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px;
 `;
 
 const SearchWrapper = styled.div`
+  display: flex;
+  justify-content: center;
   margin: 20px 0;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const SearchInput = styled.input`
-  padding: 8px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-right: 10px;
+  width: 70%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 2px solid #ccc;
+  border-radius: 4px 0 0 4px;
+  outline: none;
+  @media (max-width: 768px) {
+    width: 90%;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
 `;
 
 const SearchButton = styled.button`
-  padding: 8px 16px;
-  font-size: 16px;
+  padding: 10px 20px;
+  font-size: 1rem;
   background-color: #007bff;
   color: #fff;
-  border: none;
-  border-radius: 4px;
+  border: 2px solid #007bff;
+  border-radius: 0 4px 4px 0;
   cursor: pointer;
 
   &:hover {
     background-color: #0056b3;
+    border-color: #0056b3;
+  }
+  @media (max-width: 768px) {
+    width: 90%;
+    border-radius: 4px;
   }
 `;
 
 const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
   margin: 20px 0;
+  gap: 10px;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const MainButton = styled.button`
   padding: 10px 20px;
-  font-size: 16px;
-  margin: 0 10px;
+  font-size: 1rem;
   background-color: #28a745;
   color: white;
   border: none;
@@ -257,8 +286,7 @@ const MainButton = styled.button`
 
 const ResetButton = styled.button`
   padding: 10px 20px;
-  font-size: 16px;
-  margin: 0 10px;
+  font-size: 1rem;
   background-color: #dc3545;
   color: white;
   border: none;
@@ -271,16 +299,20 @@ const ResetButton = styled.button`
 `;
 
 const SubButtonGroup = styled.div`
-  margin-top: 10px;
   display: flex;
   justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
   animation: ${fadeIn} 0.5s ease-in-out;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const SubButton = styled.button`
   padding: 10px 15px;
-  font-size: 14px;
-  margin: 0 5px;
+  font-size: 0.9rem;
   background-color: #ffc107;
   color: white;
   border: none;
@@ -298,29 +330,35 @@ const FadeInDiv = styled.div`
 
 const PlantGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   grid-gap: 20px;
+  margin-top: 20px;
 `;
 
 const PlantCard = styled.div`
-  border: 1px solid transparent;
+  border: 1px solid #ccc;
   border-radius: 4px;
   padding: 10px;
-  text-align: center;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
 `;
 
 const PlantImage = styled.img`
-  width: 60%;
+  width: 100%;
   height: auto;
   object-fit: cover;
-  border-radius: 20px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
 `;
 
 const PlantName = styled.h2`
   margin: 10px 0;
-  font-size: 18px;
-  color: black;
+  font-size: 1.2rem;
+  color: #333;
 `;
 
 const PaginationWrapper = styled.div`

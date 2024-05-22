@@ -170,6 +170,7 @@ const PayMentPage = () => {
     <div className="root-container">
           <div className="payment-container">
       <h4>식구 페이 머니</h4>
+      <h6>실제로 돈이 충전되지 않고 테스트 환경입니다! 실제 페이머니를 통한 거래는 ❌❌  </h6>
       {loading ? (
         <div className="loading-spinner"></div>
       ) : (
