@@ -61,7 +61,14 @@
 .sns-heart .list_notification-type {
     color: #ef5350;
 }
+.keyword {
+    border-left: 5px solid #505def;
+    padding-left: 15px; /* Added padding to give space between the border and content */
+}
 
+.keyword .list_notification-type {
+    color: #ef5350;
+}
 .chat {
     border-left: 5px solid #66bb6a;
     padding-left: 15px; /* Added padding to give space between the border and content */

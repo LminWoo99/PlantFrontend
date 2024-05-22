@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import '../../css/SearchModal.css';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../../css/SearchModal.css';
 import api from "../api"
 
 const SearchModalComponent = ({ isOpen, onClose }) => {
   const token = localStorage.getItem("bbs_access_token");
   const [searchTerm, setSearchTerm] = useState('');
   const [searchCondition, setSearchCondition] = useState('nickname');
-  const [searchResults, setSearchResults] = useState([]);
   const navigate = useNavigate();
 
   const handleSearchConditionChange = (e) => {
@@ -36,6 +34,9 @@ const SearchModalComponent = ({ isOpen, onClose }) => {
     <div className="search-modal-overlay">
       <div className="search-modal">
         <div className="search-modal-content">
+          <button className="search-modal-close" onClick={onClose}>
+            &times;
+          </button>
           <input
             type="text"
             placeholder="검색..."
@@ -84,9 +85,6 @@ const SearchModalComponent = ({ isOpen, onClose }) => {
               해시태그
             </label>
           </div>
-          <button className="search-modal-close" onClick={onClose}>
-            &times;
-          </button>
         </div>
       </div>
     </div>

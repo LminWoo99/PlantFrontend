@@ -1,66 +1,107 @@
-/* SearchModal.css */
-
+/* General modal overlay styles */
 .search-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%; /* Full width to cover the whole screen when active */
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 10001;
-    display: flex;
-    align-items: start; /* Align to top */
-  }
-  
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%; /* Full width to cover the whole screen when active */
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10001;
+  display: flex;
+}
+
+/* Modal styles */
+.search-modal {
+  width: 30%; /* Fixed width for the sidebar */
+  height: 100%; /* Full height */
+  background: #fff;
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  padding: 20px;
+  box-sizing: border-box; /* Include padding in width */
+}
+
+/* Content styles */
+.search-modal-content {
+  flex: 1; /* Take up remaining space */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Input styles */
+.search-modal-content input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #dbdbdb;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+/* Button styles */
+.search-modal-content button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-modal-content button:hover {
+  background-color: #45a049;
+}
+
+.search-modal-close {
+  align-self: flex-end;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #888;
+}
+
+/* Search condition selector styles */
+.search-condition-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.search-condition-selector label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.search-condition-selector input[type="radio"] {
+  cursor: pointer;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
   .search-modal {
-    width: 30%; /* Adjust the width as needed */
-    max-width: 400px; /* You can adjust max-width for responsiveness */
-    height: 100%; /* Full height */
-    background: #fff;
-    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column; /* Stack items vertically */
-    justify-content: flex-start; /* Align content to the top */
-    padding: 20px;
-    box-sizing: border-box; /* Include padding in width */
+      width: 80%; /* Take up most of the screen width on small devices */
   }
-  
+
   .search-modal-content {
-    position: fixed; /* Fixed position to stay at top */
-    width: 20%; /* Inherit width from parent */
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 20px;
-    align-items: center;
-    background-color: #191212;
-    border-bottom: 1px solid #191212;
-    background: white; /* Ensure background matches modal */
-    box-sizing: border-box; /* Include padding in width */
+      gap: 15px;
   }
-  
-  .search-modal-input {
-    width: 90%;
-    padding: 8px;
-    border: 1px solid #dbdbdb;
-    border-radius: 4px;
-    font-size: 16px;
+
+  .search-modal-content button {
+      font-size: 14px;
+      padding: 8px 16px;
   }
-  
-  .search-modal-input:focus {
-    outline: none;
-    border-color: #a2a2a2; /* Slight highlight on focus */
+
+  .search-condition-selector {
+      gap: 5px;
   }
-  
-  .search-modal-close {
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
+
+  .search-condition-selector label {
+      font-size: 14px;
   }
-  
-  .search-results {
-    padding-top: 60px; /* Add padding to account for fixed input at top */
-    overflow-y: auto;
-    height: 100%;
-  }
-  
+}

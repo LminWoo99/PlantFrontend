@@ -23,9 +23,10 @@ const SnsPostList = () => {
   const [topPostsMonth, setTopPostsMonth] = useState([]);
   const [showTopPostsWeek, setShowTopPostsWeek] = useState(false);
   const [showTopPostsMonth, setShowTopPostsMonth] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const fetchPosts = async () => {
+      setLoading(true); // Start loading
       try {
         const response = await api.get(`${process.env.REACT_APP_SERVER_URL}/plant-sns-service/snsPosts`, {
           headers: { Authorization: `Bearer ${token}` }
@@ -34,6 +35,8 @@ const SnsPostList = () => {
         console.log(response);
       } catch (error) {
         console.error('게시글을 불러오는 데 실패했습니다.', error);
+      } finally {
+        setLoading(false); // End loading
       }
     };
 
@@ -204,7 +207,13 @@ const SnsPostList = () => {
       <Sidebar />
       <div className="posts-container">
         <PopularPostsHeader />
-        {posts && posts.map(post => (
+        {loading ? (
+          <div className="loading-message">
+            <div className="loading-spinner"></div>
+            데이터를 가져오는 중입니다. 잠시만 기다려주십시오...
+          </div>
+        ):(
+        posts && posts.map(post => (
           <div className="post-card" key={post.id}>
             <div className="post-header">
               <img src="/images/profile-placeholder.png" alt="프로필 이미지" className="sns-profile-img" />
@@ -231,7 +240,7 @@ const SnsPostList = () => {
               <div className="post-meta">
                 <div className="likes-and-comments">
                   <div className="likes">
-                    <i className={`far fa-heart ${post.snsLikesStatus ? 'liked' : ''}`} onClick={() => handleLikeClick(post.id, memberNo)}></i>
+                    <i className={`fa fa-heart ${post.snsLikesStatus ? 'liked' : ''}`} onClick={() => handleLikeClick(post.id, memberNo)}></i>
                     <span>{post.snsLikesCount}명이 좋아합니다</span>
                   </div>
                   <div className="comments">
@@ -250,14 +259,14 @@ const SnsPostList = () => {
                   ))}
                 </div>
                 <div className="comment-input-container">
-                  <i className="far fa-smile"></i> &nbsp;&nbsp;<input type="text" placeholder="Add a comment..." className="comment-input" value={commentsContent[post.id] || ''}
+                  <i className="far fa-smile"></i> &nbsp;&nbsp;<input type="text" placeholder="댓글 추가..." className="comment-input" value={commentsContent[post.id] || ''}
                     onChange={(e) => handleCommentChange(post.id, e.target.value)} />
-                  <button className="post-comment-button" onClick={() => saveComment(post.id, nickname)}>Post</button>
+                  <button className="post-comment-button" onClick={() => saveComment(post.id, nickname)}>게시</button>
                 </div>
               </div>
             </div>
           </div>
-        ))}
+        )))}
         {postId && (
           <ModalComponent postId={postId} show={true} onClose={() => navigate('/snspostlist')} />
         )}
