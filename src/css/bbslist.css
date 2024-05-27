@@ -1,4 +1,44 @@
-.card-list {
+.tradeBoard-bbs-list-container {
+  padding: 20px;
+}
+
+.tradeBoard-search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.tradeBoard-search-input {
+  width: 300px;
+}
+
+.tradeBoard-search-condition-selector {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+}
+
+.tradeBoard-search-condition-selector label {
+  margin-right: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.tradeBoard-search-condition-selector input[type="radio"] {
+  margin-right: 5px;
+}
+
+.tradeBoard-search-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tradeBoard-card-list {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
@@ -6,7 +46,7 @@
   align-items: center;
 }
 
-.card {
+.tradeBoard-card {
   display: flex;
   flex-direction: row;
   background-color: #f8f8f8;
@@ -20,90 +60,90 @@
   transition: transform 0.2s;
 }
 
-.card:hover {
+.tradeBoard-card:hover {
   transform: scale(1.05);
 }
 
-.card-thumbnail {
+.tradeBoard-card-thumbnail {
   width: 200px;
   height: 200px;
   object-fit: cover;
 }
 
-.card-body {
+.tradeBoard-card-body {
   padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-.card-title {
+.tradeBoard-card-title {
   font-size: 1.2em;
   font-weight: bold;
   margin-bottom: 10px;
 }
 
-.card-status, .card-author, .card-price, .card-views, .card-likes {
+.tradeBoard-card-status, .tradeBoard-card-author, .tradeBoard-card-price, .tradeBoard-card-views, .tradeBoard-card-likes {
   margin-top: 5px;
 }
 
 @media only screen and (max-width: 768px) {
-  .card-list {
+  .tradeBoard-card-list {
       flex-direction: column;
       justify-content: center;
       align-items: center;
   }
 
-  .card {
+  .tradeBoard-card {
       flex-direction: column;
       width: 100%;
       max-width: 100%;
   }
 
-  .card-thumbnail {
+  .tradeBoard-card-thumbnail {
       width: 100%;
       height: auto;
   }
 
-  .card-body {
+  .tradeBoard-card-body {
       padding: 15px;
   }
 
-  .card-title {
+  .tradeBoard-card-title {
       font-size: 1em;
   }
 
-  .card-status, .card-author, .card-price, .card-views, .card-likes {
+  .tradeBoard-card-status, .tradeBoard-card-author, .tradeBoard-card-price, .tradeBoard-card-views, .tradeBoard-card-likes {
       font-size: 0.8em;
   }
 }
 
 @media only screen and (min-width: 769px) {
-  .card-list {
+  .tradeBoard-card-list {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 20px;
   }
 
-  .card {
+  .tradeBoard-card {
       flex-direction: row;
       max-width: 100%;
   }
 
-  .card-thumbnail {
+  .tradeBoard-card-thumbnail {
       width: 150px;
       height: 150px;
   }
 
-  .card-body {
+  .tradeBoard-card-body {
       padding: 20px;
   }
 
-  .card-title {
+  .tradeBoard-card-title {
       font-size: 1.2em;
   }
 
-  .card-status, .card-author, .card-price, .card-views, .card-likes {
+  .tradeBoard-card-status, .tradeBoard-card-author, .tradeBoard-card-price, .tradeBoard-card-views, .tradeBoard-card-likes {
       font-size: 1em;
   }
 }

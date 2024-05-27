@@ -1,11 +1,11 @@
 * {
-	
 	color: #04B486;
 }
 
 .bg-light {
     background-color: #04B486 !important;
 }
+
 .app-container {
 	background-color: #edfbf4;
 	height: 100vh;
@@ -16,7 +16,8 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-  }
+}
+
 textarea {
     background-color: transparent;
     resize: none;
@@ -31,6 +32,7 @@ textarea {
 	height: 50px;
 	background-color: #e9ecef;
 }
+
 .sns-profile-img {
 	border-radius: 50%;
 	width: 40px;
@@ -63,8 +65,7 @@ span.bbs-title {
 	color: #04B486;
 }
 
-.pagination > li > a
-{
+.pagination > li > a {
     background-color: white;
     color:  #212529 !important;
 }
@@ -88,16 +89,34 @@ span.bbs-title {
 .pagination > li > a:focus,
 .pagination > li > a:hover,
 .pagination > li > span:focus,
-.pagination > li > span:hover
-{
+.pagination > li > span:hover {
     color: black;
     border-color: #ddd;
 }
 
-
-.pagination > .active > a:hover
-{
+.pagination > .active > a:hover {
     background-color: #212529 !important;
 	color: #ffffff;
     border: solid 1px #ffffff;
+}
+
+.login-container {
+    padding: 20px;
+    max-width: 500px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.kakaobtn {
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.kakaobtn img {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
 }

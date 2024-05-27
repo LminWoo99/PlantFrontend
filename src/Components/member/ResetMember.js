@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import api from "../api"
+import api from "../api";
+import '../../css/ResetPassword.css';
 
 function ResetPassword() {
   const navigate = useNavigate();
@@ -35,13 +35,14 @@ function ResetPassword() {
     try {
       const memberDto = {
         username: username,
-        password: newPassword
+        password: newPassword,
       };
 
-      await api.post(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/user/pwd`, memberDto,{headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+      await api.post(`${process.env.REACT_APP_SERVER_URL}/plant-service/api/user/pwd`, memberDto, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       setSuccessMessage("비밀번호가 재설정되었습니다.");
       setErrorMessage("");
@@ -54,14 +55,14 @@ function ResetPassword() {
     } catch (error) {
       const resp = error.response.data;
       console.log(resp);
-      if (resp.errorCodeName === "006"){
+      if (resp.errorCodeName === "006") {
         alert(resp.message);
       }
     }
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+    <div className="reset-password-container">
       <h2>비밀번호 재설정</h2>
       <div>
         <input
@@ -69,25 +70,22 @@ function ResetPassword() {
           placeholder="아이디 입력"
           value={username}
           onChange={handleUsernameChange}
-          style={{ width: "300px", marginBottom: "10px" }}
         />
         <input
           type="password"
           placeholder="새로운 비밀번호 입력"
           value={newPassword}
           onChange={handleNewPasswordChange}
-          style={{ width: "300px", marginBottom: "10px" }}
         />
         <input
           type="password"
           placeholder="비밀번호 확인"
           value={confirmPassword}
           onChange={handleConfirmPasswordChange}
-          style={{ width: "300px", marginBottom: "10px" }}
         />
         <button onClick={handleResetPassword}>비밀번호 재설정</button>
-        {errorMessage && <p>{errorMessage}</p>}
-        {successMessage && <p>{successMessage}</p>}
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
+        {successMessage && <p className="success-message">{successMessage}</p>}
       </div>
     </div>
   );

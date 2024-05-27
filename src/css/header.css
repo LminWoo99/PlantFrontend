@@ -25,7 +25,7 @@ h1 {
   justify-content: center; /* Centers the buttons horizontally */
   align-items: center; /* Aligns items vertically */
   flex-wrap: wrap; /* Allows buttons to wrap on small screens */
-  gap: 30px; /* This creates space between the buttons */
+  gap: 60px; /* This creates space between the buttons */
 }
 
 .nav-button {
