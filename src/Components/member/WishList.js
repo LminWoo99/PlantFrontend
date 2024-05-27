@@ -28,7 +28,16 @@ function WishList() {
       console.error("Error fetching wishlist:", error);
     }
   };
+  const formatDate = (dateString) => {
+    console.log(dateString);
 
+    const year = dateString[0]
+    const month = dateString[1]
+    const day = dateString[2]
+    const hours = dateString[3]
+    const minutes = dateString[4]
+    return `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분`;
+};
   return (
     <div className="wishlist-container">
       <h2>내 찜 목록</h2>
@@ -39,7 +48,7 @@ function WishList() {
               <div className="item-title">{item.title}</div>
               <div className="item-status">{item.status}</div>
               <div className="item-status">{item.createBy}</div>
-              <div className="item-date">{item.createdAt}</div>
+              <div className="item-date">{formatDate(item.createdAt)}</div>
             </Link>
           </div>
         ))}

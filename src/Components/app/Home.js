@@ -19,6 +19,7 @@ function Home() {
   }, []);
 
   return (
+    
     <div className="home-container">
       <div className="text-container">
         <div className="animated-text">{textArray[currentIndex]}</div>

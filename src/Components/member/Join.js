@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import api from "../api"
+import api from "../api";
 
 function Join() {
   const [username, setUsername] = useState("");
@@ -49,7 +49,6 @@ function Join() {
     const emailValue = event.target.value;
     setEmail(emailValue);
 
-
     const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     setValidEmail(emailPattern.test(emailValue));
   };
@@ -70,7 +69,6 @@ function Join() {
 
         if (resp.status === 200) {
           setUsernameAvailable(true);
-          
         }
       })
       .catch((err) => {
@@ -78,7 +76,7 @@ function Join() {
         console.log(err);
 
         const resp = err.response.data;
-        if (resp.errorCodeName=="018") {
+        if (resp.errorCodeName === "018") {
           alert(resp.message);
         }
       });
@@ -97,11 +95,10 @@ function Join() {
       })
       .catch((err) => {
         console.log("[Join.js] checkNicknameDuplicate() error :<");
-        
+        console.log(err);
 
         const resp = err.response.data;
-        console.log(resp);
-        if (resp.errorCodeName === "005"){
+        if (resp.errorCodeName === "005") {
           alert(resp.message);
         }
       });
@@ -114,22 +111,22 @@ function Join() {
         console.log(resp.data);
 
         if (resp.status === 200) {
-          alert("본인인증을 진행해주세요!")
+          alert("본인인증을 진행해주세요!");
           setEmailAvailable(true);
         }
       })
       .catch((err) => {
         console.log("[Join.js] checkNicknameDuplicate() error :<");
-        
+        console.log(err);
 
         const resp = err.response.data;
-        console.log(resp);
-        if (resp.errorCodeName === "019"){
+        if (resp.errorCodeName === "019") {
           alert(resp.message);
           setEmailAvailable(false); 
         }
       });
   };
+
   /* 회원가입 */
   const join = async () => {
     if (!username || !nickname || !password || !checkpassword || !email || !validEmail) {
@@ -190,6 +187,7 @@ function Join() {
         }
       });
   };
+
   const handleEmailVerificationClick = () => {
     if (!emailAvailable) {
       alert("이메일 중복 확인을 해주세요.");
@@ -205,6 +203,7 @@ function Join() {
         console.error(err);
       });
   };
+
   const handleEmailConfirmationCheck = () => {
     if (emailVerificationCode !== code) {
       console.error("인증번호가 일치하지 않습니다.");
@@ -214,6 +213,7 @@ function Join() {
       alert("인증번호 확인 완료");
     }
   };
+
   return (
     <div>
       <table className="table">
@@ -300,10 +300,16 @@ function Join() {
           <span className="text-danger">모든 필수 정보를 입력해주세요.</span>
         )}
       </div>
-
+      <div className="my-2 d-flex justify-content-center">
+        <span className="text-danger small">
+          회원가입시 민감정보(비밀번호)는 암호화되어 저장되니 걱정하지 않으셔도 됩니다. 이메일은 사용 중인 이메일로 입력해야 인증받을 수 있습니다.
+        </span>
+      </div>
       <div className="my-3 d-flex justify-content-center">
         <button className="btn btn-outline-secondary" onClick={join}><i className="fas fa-user-plus"></i> 회원가입</button>
       </div>
+
+      
     </div>
   );
 }

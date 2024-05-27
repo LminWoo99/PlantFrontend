@@ -1,4 +1,3 @@
-// CouponComponent.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../../css/CouponComponent.css'; // 가정한 CSS 파일 경로
@@ -10,16 +9,15 @@ function CouponComponent() {
 
   useEffect(() => {
     const checkEventTime = () => {
-      const currentHour = new Date().getHours();
-      setIsEventTime(true);
-    //   setIsEventTime(currentHour >= 13 && currentHour < 14);
+      const currentHour = new Date().getUTCHours() + 9; 
+      
+      setIsEventTime(currentHour >= 13);
     };
-  
+
     checkEventTime();
-  
- 
+
     const interval = setInterval(checkEventTime, 60000);
-  
+
     return () => clearInterval(interval);
   }, []);
 
@@ -31,26 +29,25 @@ function CouponComponent() {
           discountPrice: 3000,
         };
 
-        const response =await api.post(`${process.env.REACT_APP_SERVER_URL}/plant-coupon-service/coupon`, couponData,  {
-            headers: {
-                Authorization: window.localStorage.getItem('bbs_access_token'),
-            },
-            
+        const response = await api.post(`${process.env.REACT_APP_SERVER_URL}/plant-coupon-service/coupon`, couponData, {
+          headers: {
+            Authorization: window.localStorage.getItem('bbs_access_token'),
+          },
         });
-        
+
         // 성공적으로 쿠폰을 받았다고 상태 업데이트
         setCouponStatus('claimed');
         console.log(response);
         alert('쿠폰이 성공적으로 발급되었습니다.');
       } catch (error) {
-        if (error.response.status ===429) {
+        if (error.response.status === 429) {
           // 100개를 초과했다는 상태 업데이트
           setCouponStatus('ended');
           alert('오늘의 쿠폰은 모두 소진되었습니다.');
-        } 
-        if(error.response.status=== 409) {
+        }
+        if (error.response.status === 409) {
           // 기타 에러 처리
-          setCouponStatus('claimed')
+          setCouponStatus('claimed');
           alert('한 계정당 쿠폰은 하나만 발급 가능합니다.');
         }
       }
@@ -81,7 +78,6 @@ function CouponComponent() {
       )}
     </div>
   );
-
 }
 
 export default CouponComponent;

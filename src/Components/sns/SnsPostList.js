@@ -245,9 +245,9 @@ const SnsPostList = () => {
                   </div>
                   <div className="comments">
                     <i className="far fa-comment"></i>
-                    {post.commentCount != null ? <button onClick={() => toggleComments(post.id)}>
-                      {post.commentCount}개 댓글 보기
-                    </button> : null}
+                    <button onClick={() => toggleComments(post.id)}>
+                      댓글 보기
+                    </button>
                   </div>
                   <div className="view-count">
                     조회수 : {post.snsViewsCount}회

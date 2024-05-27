@@ -6,8 +6,10 @@ function Header() {
   return (
     <header className="header">
       <div className="container text-center">
+      <Link  to="/">
         <img src={myImage} alt="Logo" className="logo" />
         <h1>식구하자</h1>
+        </Link>
         <div className="nav-buttons">
           <Link className="nav-button" to="/">
             <i className="fas fa-home"></i>
